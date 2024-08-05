@@ -1,0 +1,72 @@
+.year-picker {
+    max-width: 216px;
+    min-width: 120px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.year-picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.year-picker-header button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.year-picker-header .current-year {
+    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.year-picker-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px;
+}
+
+.year-picker-body .year {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.year-picker-body .year:hover {
+    background-color: #f0f0f0;
+}
+
+.year-picker-body .year.selected {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* ========================================== */
+.year-picker-header {
+    position: relative; /* Đảm bảo định vị đúng */
+}
+
+.year-picker-container {
+    margin-top: 3px;
+    border-radius: 8px;
+    display: none;
+    position: absolute;
+    z-index: 1;
+    background-color: #fff; /* Đảm bảo nền màu trắng để nhìn rõ */
+    border: 1px solid #ccc; /* Thêm border nếu cần */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng để rõ ràng hơn */
+}
