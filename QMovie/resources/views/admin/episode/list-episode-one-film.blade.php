@@ -25,7 +25,7 @@
                             </div>
                         @endif --}}
     
-                            {!! Form::open(['route'=>'episode.store-episode', 'method'=>'POST']) !!}
+                            {!! Form::open(['route'=>'store-episode', 'method'=>'POST']) !!}
                             <div class="form-group">
                                 {!! Form::label('Movie', 'Tên Phim', []) !!}
                                 {!! Form::text('movie_name', isset($movie) ? ($movies_with_resolution[$movie->id] ?? '') : '', ['class'=>'form-control select-movie', 'readonly']) !!}

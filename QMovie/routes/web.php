@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\HomeController;
-// Admin Controller
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\EpisodeController;
@@ -13,6 +12,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\ServerMovieController;
 use Illuminate\Support\Facades\Redis;
+use App\Http\Controllers\LoginGoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Redis;
 // });
 
 Route::get('/', [IndexController::class, 'home'])->name('homepage');
+Route::get('/home', [IndexController::class, 'home'])->name('home');
 Route::get('/danh-muc/{slug}', [IndexController::class, 'category'])->name('category');
 Route::get('/nam/{year}', [IndexController::class, 'year'])->name('year');
 Route::get('/the-loai/{slug}', [IndexController::class, 'genre'])->name('genre');
@@ -49,7 +50,7 @@ Auth::routes();
 Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
 // Route::post('drag-and-drop', [MovieController::class,'resorting'])->name('resorting');
 // đặt name thì url->route()
-Route::get('/watching/list', [MovieController::class, 'list'])->name('watching.list')->middleware('role:admin');
+Route::get('/watching/list', [MovieController::class, 'list'])->name('watching-list')->middleware('role:admin');
 Route::post('/drag-and-drop', [CategoryController::class,'resorting'])->name('resorting')->middleware('role:admin');
 Route::get('/sort-movie', [MovieController::class,'sortMovie'])->name('sort-movie')->middleware('role:admin');
 Route::post('/resorting-navbar', [MovieController::class,'resortingNavbar'])->name('resorting-navbar')->middleware('role:admin');
@@ -57,7 +58,7 @@ Route::post('/resorting-movie', [MovieController::class,'resortingMovie'])->name
 
 Route::get('/select-movie', [EpisodeController::class, 'selectMovie'])->name('select-movie')->middleware('role:admin');
 Route::get('/add-episode/{id}', [EpisodeController::class, 'addEpisode'])->name('add-episode')->middleware('role:admin');
-Route::post('/episode/store', [EpisodeController::class, 'storeEpisode'])->name('episode.store-episode')->middleware('role:admin');
+Route::post('/episode/store', [EpisodeController::class, 'storeEpisode'])->name('store-episode')->middleware('role:admin');
 Route::post('/watch-video', [MovieController::class, 'watchVideo'])->name('watch-video')->middleware('role:admin');
 
 Route::post('/update-year-film', [MovieController::class, 'updateYear'])->name('update-year-film')->middleware('role:admin');
@@ -86,7 +87,6 @@ Route::fallback(function() {
     return redirect()->route('404');
 });
 
-
 Route::get('/test-redis', function () {
     try {
         $sessionId = session()->getId();
@@ -96,4 +96,12 @@ Route::get('/test-redis', function () {
     } catch (\Exception $e) {
         return 'Redis connection failed: ' . $e->getMessage();
     }
+});
+
+// Google Login URL
+// Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle']);
+// Route::get('auth/google/callback', [LoginGoogleController::class, 'handleGoogleCallback']);
+Route::prefix('google')->name('google.')->group( function(){
+    Route::get('google/login', [LoginGoogleController::class, 'redirectToGoogle'])->name('login');
+    Route::any('callback', [LoginGoogleController::class, 'handleGoogleCallback'])->name('callback');
 });

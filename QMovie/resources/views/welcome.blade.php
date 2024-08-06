@@ -77,14 +77,27 @@
                   <div id="bookmark-list" class="hidden bookmark-list-on-pc">
                      <ul style="margin: 0;"></ul>
                   </div> --}}
-                  <div id="sign-in" class="box-shadow">
-                     <i class='fa fa-sign-in'></i>
-                     <span> Đăng nhập</span>
-                  </div>
-                  <div id="sign-up" class="box-shadow">
-                     <i class='fa fa-user'></i>
-                     <span> Đăng ký</span>
-                  </div>
+                  @if(Auth::check())
+                     <a id="sign-in" class="box-shadow">
+                        <span> Xin chào! {{ Auth::user()->role }} {{ Auth::user()->name }}</span>
+                     </a>
+                     <a id="sign-out" class="box-shadow" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class='fa fa-sign-out'></i>
+                        <span> Đăng xuất</span>
+                     </a>
+                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                     </form>
+                  @else
+                     <a id="sign-in" class="box-shadow" data-toggle="modal" data-target="#signInModalCenter">
+                        <i class='fa fa-sign-in'></i>
+                        <span> Đăng nhập</span>
+                     </a>
+                     {{-- <a id="sign-up" class="box-shadow" data-toggle="modal" data-target="#signUpModalCenter">
+                        <i class='fa fa-user'></i>
+                        <span> Đăng ký</span>
+                     </a> --}}
+                  @endif
                </div>
          </div>
       </div>
@@ -174,6 +187,8 @@
    <div class="container">
       @yield('content')
       @include('pages.include.modal')
+      @include('pages.include.sign-in')
+      @include('pages.include.sign-up')
    </div>
 
    <div class="clearfix"></div>
@@ -207,10 +222,12 @@
          color: #ffed4d;
          background: #DF0053;
       }
+      #sign-out,
       #sign-up {
          background: #224361;
          color: #fff;
       }
+      #sign-out,
       #sign-up,
       #sign-in {
       display: inline-block;
@@ -222,22 +239,27 @@
       margin-top: 1px;
       margin-right: 15px;
       }
+      #sign-out:hover,
       #sign-up:hover,
       #sign-in:hover {
       background: #337ab7;
       }
+      .sign-out-on-mobile,
       .sign-up-on-mobile,
       .sign-in-on-mobile {
       position: relative;
       }
+      .sign-out-on-mobile,
       .sign-in-on-mobile {
          color: #ffed4d;
       }
+      .halim-light-mode #sign-out,
       .halim-light-mode #sign-up,
       .halim-light-mode #sign-in {
       box-shadow: none;
       text-shadow: none;
       }
+      .halim-light-mode #sign-out:hover,
       .halim-light-mode #sign-up:hover,
       .halim-light-mode #sign-in:hover {
       background: #4d7496;

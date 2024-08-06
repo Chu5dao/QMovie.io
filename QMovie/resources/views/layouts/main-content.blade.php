@@ -29,7 +29,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{{route('watching.create')}}">Thêm Phim</a>
-                    <a class="dropdown-item" href="{{route('watching.list')}}">Danh Sách Phim</a>
+                    <a class="dropdown-item" href="{{route('watching-list')}}">Danh Sách Phim</a>
                 </div>
 
             </li>
