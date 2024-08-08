@@ -4,7 +4,7 @@
     + PHP - Framework Laravel v8.x
     + Auth FE Authentication UI - Laravel v6.x
 	+ DB MySQL
-    + Google Auth
+    + Google Auth - Google APIs
     + Laravel Socialite
     + Theme User (HTML/CSS/JS) - Sưu tầm và có tùy biến lại
     + Theme Admin (HTML/CSS/JS) - Glance Design Dashboard an Admin Panel Category Flat Bootstrap Responsive
