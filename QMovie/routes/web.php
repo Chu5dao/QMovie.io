@@ -13,6 +13,7 @@ use App\Http\Controllers\InfoController;
 use App\Http\Controllers\ServerMovieController;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\LoginGoogleController;
+use App\Http\Controllers\LoginFacebookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,4 +105,12 @@ Route::get('/test-redis', function () {
 Route::prefix('google')->name('google.')->group( function(){
     Route::get('google/login', [LoginGoogleController::class, 'redirectToGoogle'])->name('login');
     Route::any('callback', [LoginGoogleController::class, 'handleGoogleCallback'])->name('callback');
+});
+
+// Facebook Login URL
+// Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle']);
+// Route::get('auth/google/callback', [LoginGoogleController::class, 'handleGoogleCallback']);
+Route::prefix('facebook')->name('facebook.')->group( function(){
+    Route::get('facebook/login', [LoginFacebookController::class, 'redirectToFacebook'])->name('login');
+    Route::any('callback', [LoginFacebookController::class, 'handleFacebookCallback'])->name('callback');
 });

@@ -4,35 +4,35 @@
 <div id="logreg-forms">
     <form class="form-signin" method="POST" action="{{ route('login') }}">
         @csrf
-        <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">Sign in</h1>
+        <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">ĐĂNG NHẬP</h1>
         <div class="social-login">
             <button class="btn facebook-btn social-btn" type="button">
-                <span><i class="fab fa-facebook-f"></i> Sign in with Facebook</span>
+                <span><i class="fab fa-facebook-f"></i> Đăng nhập với Facebook</span>
             </button>
-            <button class="btn google-btn social-btn" type="button">
-                <span><i class="fab fa-google-plus-g"></i> Sign in with Google+</span>
+            <button class="btn google-btn social-btn" type="button" onclick="window.location='{{ route('google.login') }}'">
+                <span><i class="fab fa-google-plus-g"></i> Đăng nhập với Google+</span>
             </button>
         </div>
-        <p style="text-align:center">OR</p>
-        <input type="email" placeholder="Email address" id="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+        <p style="text-align:center">HOẶC</p>
+        <input type="email" placeholder="Địa chỉ Email" id="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
         @error('email')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
         @enderror
-        <input type="password" placeholder="Password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+        <input type="password" placeholder="Mật khẩu" id="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
         @error('password')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
         @enderror
         <button class="btn btn-success btn-block" type="submit">
-            <i class="fas fa-sign-in-alt"></i> {{ __('Login') }}
+            <i class="fas fa-sign-in-alt"></i> {{ __('Đăng nhập') }}
         </button>
-        <a href="#" id="forgot_pswd">Forgot password?</a>
+        <a href="#" id="forgot_pswd">Quên mật khẩu?</a>
         <hr>
         <button class="btn btn-primary btn-block" type="button" id="btn-signup">
-            <i class="fas fa-user-plus"></i> Sign up New Account
+            <i class="fas fa-user-plus"></i> Đăng ký tài khoản mới
         </button>
     </form>
 
@@ -44,47 +44,47 @@
     
     <form method="POST" action="{{ route('register') }}" class="form-signup">
         @csrf
-        <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">Sign up</h1>
+        <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">Đăng ký</h1>
         <div class="social-login">
             <button class="btn facebook-btn social-btn" type="button">
-                <span><i class="fab fa-facebook-f"></i> Sign up with Facebook</span>
+                <span><i class="fab fa-facebook-f"></i> Đăng ký với Facebook</span>
             </button>
         </div>
         <div class="social-login">
             <button class="btn google-btn social-btn" type="button">
-                <span><i class="fab fa-google-plus-g"></i> Sign up with Google+</span>
+                <span><i class="fab fa-google-plus-g"></i> Đăng ký với Google+</span>
             </button>
         </div>
         <p style="text-align:center">OR</p>
-        <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Full name" required="" autofocus="" value="{{ old('name') }}">
+        <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Tên" required="" autofocus="" value="{{ old('name') }}">
             @error('name')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
-        <input type="email" id="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Email address" required autofocus="" value="{{ old('email') }}">
+        <input type="email" id="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Địa chỉ Email" required autofocus="" value="{{ old('email') }}">
             @error('email')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
-        <input type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password" required autofocus="" autocomplete="new-password" min="8">
+        <input type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Mật khẩu" required autofocus="" autocomplete="new-password" min="8">
             @error('password')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
-        <input type="password" id="password-confirm" class="form-control" name="password_confirmation" placeholder="Repeat Password" required autofocus="" autocomplete="new-password">
+        <input type="password" id="password-confirm" class="form-control" name="password_confirmation" placeholder="Nhập lại mật khẩu" required autofocus="" autocomplete="new-password">
         <div style="text-align:center">
-            <label for="role">Role:</label>
+            <label for="role">Vai trò:</label>
             {{-- <input type="radio" name="role" value="admin" checked> Admin --}}
             <input type="radio" name="role" value="user" checked> User
             <input type="radio" name="role" value="contributor"> Contributor
         </div>
         <button class="btn btn-primary btn-block" type="submit">
-            <i class="fas fa-user-plus"></i> {{ __('Register') }}
+            <i class="fas fa-user-plus"></i> {{ __('Đăng ký') }}
         </button>
-        <a href="#" id="cancel_signup"><i class="fas fa-angle-left"></i> Back</a>
+        <a href="#" id="cancel_signup"><i class="fas fa-angle-left"></i> Trở lại</a>
     </form>
     <br>
 </div>

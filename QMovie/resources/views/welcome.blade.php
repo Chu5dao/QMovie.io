@@ -93,10 +93,10 @@
                         <i class='fa fa-sign-in'></i>
                         <span> Đăng nhập</span>
                      </a>
-                     {{-- <a id="sign-up" class="box-shadow" data-toggle="modal" data-target="#signUpModalCenter">
+                     <a id="sign-up" class="box-shadow" data-toggle="modal" data-target="#signUpModalCenter">
                         <i class='fa fa-user'></i>
                         <span> Đăng ký</span>
-                     </a> --}}
+                     </a>
                   @endif
                </div>
          </div>

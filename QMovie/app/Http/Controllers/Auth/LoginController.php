@@ -52,6 +52,14 @@ class LoginController extends Controller
      */
     public function authenticated(Request $request, $user)
     {
+        if ($user->role === 'admin') {
+            return redirect('/admin');
+        } elseif ($user->role === 'user') {
+            return redirect('/home');
+        } else {
+            return redirect('/'); // Trường hợp khác, chuyển hướng về trang chủ hoặc một trang khác.
+        }
+        
         // Phát sự kiện khi người dùng đăng nhập
         event(new UserOnlineStatus($user->id, true));
 

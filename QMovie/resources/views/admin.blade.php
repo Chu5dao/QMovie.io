@@ -11,6 +11,7 @@
 // }
 ?>
     <!-- admin widget -->
+    @if(auth()->user()->isAdmin('admin'))
     <div class="col_3">
         <div class="col-md-3 widget widget1">
             <div class="r3_counter_box">
@@ -84,6 +85,9 @@
         </div>
         <div class="clearfix"></div>
     </div>
+    @endif
+
+    
     <div class="row-one widgettable">
         
     </div>
@@ -94,8 +98,7 @@
                 {{ session('status') }}
             </div>
         @endif
-
-        Xin chào Admin
+        Xin chào {{ Auth::user()->role }} {{ Auth::user()->name }}
     </div> </div>
     {{-- script --}}
     <!-- Load userStatus.js -->

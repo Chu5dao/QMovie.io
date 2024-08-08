@@ -74,7 +74,6 @@
                     margin-top: 2px;
                     margin-left: 2px;
                     min-height: 122px;
-                    min-width: 300px;
                 }
                 .popular-post .item.post-37176 img {
                     min-height: 122px;

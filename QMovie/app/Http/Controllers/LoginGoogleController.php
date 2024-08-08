@@ -104,22 +104,32 @@ class LoginGoogleController extends Controller
             // Check users email if already there
             $finduser = User::where('email', $user->getEmail())->first();
     
-            if($finduser){
-    
-                Auth::login($finduser);
-    
-                return redirect()->intended('/');
+            if(!$finduser){
+                $newUser = User::updateOrCreate(
+                    [
+                    'google_id'=> $user->getId()
+                    ],
+                    [
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'role' => 'user',
+                        'password' => encrypt('123456dummy')
+                    ]
+                );
     
             }else{
-                $newUser = User::create([
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => 'user',
-                    'password' => encrypt('123456dummy')
+                $newUser = User::where('email', $user->getEmail())->update([
+                    'google_id'=> $user->getId(),
                 ]);
+                $newUser = User::where('email', $user->getEmail())->first();
+            }
+
+            Auth::loginUsingId($newUser->id);
     
-                Auth::login($newUser);
-    
+            // Kiểm tra vai trò của người dùng
+            if ($newUser->role === 'admin') {
+                return redirect()->intended('/admin');
+            } else {
                 return redirect()->intended('/');
             }
     

@@ -36,4 +36,10 @@ return [
         'redirect' => env('APP_URL').'/google/callback',
         // 'redirect' => env('APP_URL').'/auth/google/callback',
     ],
+
+    'facebook' => [
+        'client_id' => '1032939334849884',
+        'client_secret' => '39288b8e4ddb8393ecfc2b764219e064',
+        'redirect' => 'http://localhost:8000/facebook/callback',
+    ],
 ];

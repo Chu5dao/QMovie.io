@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -68,7 +69,17 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => $data['role'],
+            'role' => $data['role'] ?? 'user',
         ]);
     }
+
+    protected function registered(Request $request, $user)
+{
+    // Kiểm tra role và chuyển hướng sau khi đăng ký thành công
+    if ($user->role === 'admin') {
+        return redirect('/admin');
+    } else {
+        return redirect('/');
+    }
+}
 }
