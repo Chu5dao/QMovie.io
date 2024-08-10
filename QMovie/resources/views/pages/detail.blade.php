@@ -172,7 +172,14 @@
                                 @endif
                                     <li class="list-info-group-item">
                                         <span>Danh Mục : </span>
-                                        <a href="{{route('category', [$movie->category->slug])}}" rel="category tag">{{$movie->category->title}}</a>
+                                        {{-- <a href="{{route('category', [$movie->category->slug])}}" rel="category tag">{{$movie->category->title}}</a> --}}
+
+                                        @foreach($movie->categories as $category_movie)
+                                            <a href="{{route('category', $category_movie->slug)}}" rel="category tag">{{$category_movie->title}}</a>
+                                            @if (!$loop->last)
+                                                ,
+                                            @endif
+                                        @endforeach
                                     </li>
                                     <li class="list-info-group-item">
                                         <span>Thể loại : </span>

@@ -13,10 +13,6 @@ class Movie extends Model
     protected $fillable = [
         'title', 'name_eng', 'description', 'tags', 'duration', 'hot', 'resolution', 'trailer', 'subtitled', 'status', 'category_id', 'country_id', 'slug', 'date_cr', 'date_up', 'year', 'image', 'ep_number', 'views'
     ];
-    
-    public function movie_genre(){
-        return $this-> belongsToMany(Genre::class, 'movie_genre', 'movie_id', 'genre_id');
-    }
     // Định nghĩa quan hệ one-to-many với Episode
     public function episodes()
     {
@@ -29,6 +25,10 @@ class Movie extends Model
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
+    }
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'movie_category', 'movie_id', 'category_id');
     }
     protected static function boot()
     {

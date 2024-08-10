@@ -18,11 +18,66 @@
             </div>
             <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> --}}
+                <h4 class="modal-title" id="gridSystemModalLabel">Thêm danh mục</h4>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    @foreach($list_category as $key => $cate)
+                        <div class="form-check">
+                            <input type="checkbox" name="categories[]" value="{{ $cate->id }}" class="form-check-input" id="category_{{ $cate->id }}">
+                            <label class="form-check-label">{{ $cate->title }}</label>
+                        </div>
+                    @endforeach
+                    <input type="hidden" name="movie_id" id="movie_id">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-success" id="saveCategory">Lưu</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="genreModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> --}}
+                <h4 class="modal-title" id="gridSystemModalLabel">Thêm thể loại</h4>
+            </div>
+            <div class="modal-body">
+                <form id="genreForm">
+                    <div class="row">
+                    @foreach($list_genre as $key => $genre_all)
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input type="checkbox" name="genres[]" value="{{ $genre_all->id }}" class="form-check-input" id="genre_{{ $genre_all->id }}">
+                                <label class="form-check-label">{{ $genre_all->title }}</label>
+                            </div>
+                        </div>
+                    @endforeach
+                    </div>
+                    <input type="hidden" name="movie_id" id="movie_id">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-success" id="saveGenre">Lưu</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <h2 class="title1">DANH SÁCH PHIM</h2>
 <div class="blank-page widget-shadow scroll" id="style-2 div1">
@@ -130,6 +185,15 @@
         .show_video {
             cursor: pointer;
         }
+        .fix-color-btn-badge-info {
+            color: #17a2b8;
+        }
+        span.badge.badge-info {
+            background-color: #17a2b8;
+        }
+        .fix-color-btn-label-info {
+            color: #2dde98;
+        }
     </style>
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -147,9 +211,9 @@
                                 <th scope="col">Từ khóa</th>
                                 {{-- <th scope="col">Nội dung</th> --}}
                                 <th scope="col">Danh mục</th>
+                                <th scope="col">Thể loại</th>
                                 <th scope="col">Quốc gia</th>
                                 <th scope="col">Phụ đề</th>
-                                <th scope="col">Thể loại</th>
                                 <th scope="col">Năm SX</th>
                                 <th scope="col">Định dạng</th>
                                 <th scope="col">Thời lượng</th>
@@ -182,7 +246,7 @@
                                 </div></td> --}}
                                 <td>
                                     {{-- {{$movie->category->title}} --}}
-                                    <div class="dropdown">
+                                    {{-- <div class="dropdown">
                                         <button data-id="{{ $movie->id }}" name="category_list" class="form-control dropdown-toggle select-category-list" type="button" id="categoryDropdownMenuButton_{{ $movie->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             {{ $movie->category->title }}
                                         </button>
@@ -191,7 +255,21 @@
                                                 <li><a class="dropdown-item" data-value="{{ $id }}" data-id="{{ $movie->id }}">{{ $title }}</a></li>
                                             @endforeach
                                         </div>
-                                    </div>
+                                    </div> --}}
+                                    @foreach($movie->categories as $category)
+                                        <span class="label label-info">{{ $category->title }}</span>
+                                        @if (!$loop->last), @endif
+                                    @endforeach
+                                    <br>
+                                    <a href="" data-toggle="modal" data-target="#categoryModal" data-movie-id="{{ $movie->id }}"><i class="fa fa-plus-circle fa-lg fix-color-btn-label-info" aria-hidden="true"></i></a>
+                                </td>
+                                <td>
+                                    @foreach($movie->genres as $genre)
+                                        <span class="badge badge-info">{{ $genre->title }}</span>
+                                        @if (!$loop->last), @endif
+                                    @endforeach
+                                    <br>
+                                    <a href="" data-toggle="modal" data-target="#genreModal" data-movie-id="{{ $movie->id }}"><i class="fa fa-plus-circle fa-lg fix-color-btn-badge-info" aria-hidden="true"></i></a>
                                 </td>
                                 <td>
                                     {{-- {{$movie->country->title}} --}}
@@ -247,12 +325,6 @@
                                             <li><a class="dropdown-item" data-value="3" data-id="{{ $movie->id }}">Khác</a></li>
                                         </div>
                                     </div>
-                                </td>
-                                <td>
-                                    @foreach($movie->genres as $genre)
-                                        <span class="badge badge-info">{{ $genre->title }}</span>
-                                        @if (!$loop->last), @endif
-                                    @endforeach
                                 </td>
                                 {{-- <td>
                                     {!! Form::selectYear('year', 2000, 2024, isset($movie->year) ? $movie->year : '', ['class'=>'select-year', 'id'=>$movie->id]) !!}
@@ -311,10 +383,21 @@
                                 <td> 
                                     @if ($movie->ep_number == 0)
                                         Tập Lẻ 
-                                        @if ($movie->episode_count == 1)
+                                        @if ($movie->episodes->count() == 1)
                                             - Hoàn Thành
+                                            <br>
+                                            @foreach($movie->episodes as $key => $episode_list)
+                                            <a style="color: #fff"
+                                                class="show_video" 
+                                                data-movie_video_id="{{ $episode_list->movie_id }}"
+                                                data-video_episode="{{ $episode_list->episode }}">
+                                                <span class="badge badge-dard">{{$episode_list->episode}}</span>
+                                            </a>
+                                            @endforeach
                                         @else
                                             - Đang cập nhật
+                                            <br>
+                                        <a href="{{route('add-episode', $movie->id)}}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i></a>
                                         @endif
                                     @else
                                         {{-- {{$movie->episodes_count}}/{{$movie->ep_number}} Tập --}}
@@ -326,11 +409,11 @@
                                                 <span class="badge badge-dard">{{$episode_list->episode}}</span>
                                             </a>
                                         @endforeach
+                                        <br>
+                                        <a href="{{route('add-episode', $movie->id)}}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i></a>
                                     @endif
-                                    <br>
-                                    <a href="{{route('add-episode', $movie->id)}}"><i class="fa fa-plus-square fa-lg" aria-hidden="true"></i></a>
-                                    
                                 </td>
+
                                 <td>
                                     @if ($movie->date_up)
                                         {{$movie->date_up}}
@@ -408,6 +491,113 @@
         </div>
     </div>
 </div>
+<script>
+    // Cập nhật nhanh Category
+    $(document).ready(function() {
+        $('#categoryModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var movieId = button.data('movie-id');
+            var modal = $(this);
+            modal.find('#movie_id').val(movieId);
 
+            // Clear all checkboxes before populating
+            modal.find('input[type="checkbox"]').prop('checked', false);
+
+            // Fetch the categories for the selected movie
+            $.ajax({
+                url: "{{ route('get-movie-categories') }}", // Route to fetch categories
+                method: "GET",
+                data: { movie_id: movieId },
+                success: function(response) {
+                    // Reset tất cả checkbox trước khi cập nhật lại
+                    modal.find('.form-check-input').prop('checked', false);
+
+                    // Check the checkboxes for the categories the movie belongs to
+                    response.categories.forEach(function(categoryId) {
+                        modal.find('#category_' + categoryId).prop('checked', true);
+                    });
+                },
+                error: function(xhr) {
+                    alert('Lỗi khi tải danh mục. Vui lòng thử lại.');
+                }
+            });
+        });
+
+        $('#saveCategory').on('click', function() {
+            $('#categoryForm').submit();
+        });
+
+        $('#categoryForm').on('submit', function(e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                url: "{{ route('update-categories') }}",
+                method: "GET",
+                data: form.serialize(),
+                success: function(response) {
+                    $('#categoryModal').modal('hide');
+                    location.reload(); // Reload to reflect changes
+                    toastr.success(response.message);
+                },
+                error: function(xhr) {
+                    alert('Cập nhật thất bại. Vui lòng thử lại.');
+                }
+            });
+        });
+    });
+    // Cập nhật nhanh Genre
+    $(document).ready(function() {
+        $('#genreModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var movieId = button.data('movie-id');
+            var modal = $(this);
+            modal.find('#movie_id').val(movieId);
+
+            // Clear all checkboxes before populating
+            modal.find('input[type="checkbox"]').prop('checked', false);
+
+            // Fetch the genre for the selected movie
+            $.ajax({
+                url: "{{ route('get-movie-genres') }}", // Route to fetch genre
+                method: "GET",
+                data: { movie_id: movieId },
+                success: function(response) {
+                    // Reset tất cả checkbox trước khi cập nhật lại
+                    modal.find('.form-check-input').prop('checked', false);
+
+                    // Check the checkboxes for the genre the movie belongs to
+                    response.genres.forEach(function(genreId) {
+                        modal.find('#genre_' + genreId).prop('checked', true);
+                    });
+                },
+                error: function(xhr) {
+                    alert('Lỗi khi tải thể loại. Vui lòng thử lại.');
+                }
+            });
+        });
+
+        $('#saveGenre').on('click', function() {
+            $('#genreForm').submit();
+        });
+
+        $('#genreForm').on('submit', function(e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                url: "{{ route('update-genres') }}",
+                method: "GET",
+                data: form.serialize(),
+                success: function(response) {
+                    $('#genreModal').modal('hide');
+                    location.reload(); // Reload to reflect changes
+                    toastr.success(response.message);
+                },
+                error: function(xhr) {
+                    alert('Cập nhật thất bại. Vui lòng thử lại.');
+                }
+            });
+        });
+    });
+</script>
 
 @endsection

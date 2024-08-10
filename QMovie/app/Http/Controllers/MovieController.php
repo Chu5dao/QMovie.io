@@ -27,26 +27,29 @@ class MovieController extends Controller
         $list = Movie::with('category','genres','country')->withCount('episodes')->orderBy('id', 'DESC')->get(); //'category','genre','country' được thêm ở Model Movie
         $category = Category::pluck('title', 'id');
         $country = Country::pluck('title', 'id');
+        $list_category = Category::all();
+        $list_genre = Genre::all();
         $path = public_path()."/json/";
         if (!is_dir($path)){
             mkdir($path, 0777, true);
         }
         File::put($path.'movies.json', json_encode($list, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        return view('admin.watching.index', compact('list', 'category', 'country'));
+        // dd($category);
+        return view('admin.watching.index', compact('list_genre', 'list_category', 'list', 'category', 'country'));
     }
 
-    public function list()
-    {
-        $list = Movie::with('category','genres','country')->withCount('episodes')->orderBy('id', 'DESC')->get(); //'category','genre','country' là function ở Model Movie
-        $category = Category::pluck('title', 'id');
-        $country = Country::pluck('title', 'id');
-        $path = public_path()."/json/";
-        if (!is_dir($path)){
-            mkdir($path, 0777, true);
-        }
-        File::put($path.'movies.json', json_encode($list, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        return view('admin.watching.index', compact('list', 'category', 'country'));
-    }
+    // public function list()
+    // {
+    //     $list = Movie::with('category','genres','country')->withCount('episodes')->orderBy('id', 'DESC')->get(); //'category','genre','country' là function ở Model Movie
+    //     $category = Category::pluck('title', 'id');
+    //     $country = Country::pluck('title', 'id');
+    //     $path = public_path()."/json/";
+    //     if (!is_dir($path)){
+    //         mkdir($path, 0777, true);
+    //     }
+    //     File::put($path.'movies.json', json_encode($list, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    //     return view('admin.watching.index', compact('list', 'category', 'country'));
+    // }
 
     /**
      * Show the form for creating a new resource.s
@@ -58,11 +61,12 @@ class MovieController extends Controller
         $category = Category::pluck('title', 'id');
         $genre = Genre::pluck('title', 'id');
         $list_genre = Genre::all();
+        $list_category = Category::all();
         $country = Country::pluck('title', 'id');
         // $list = Movie::with('category','genre','country')->orderBy('id', 'DESC')->get(); //'category','genre','country' là function ở Model Movie
         return view('admin.watching.form', compact(
             // 'list', 
-            'category', 'genre', 'country', 'list_genre'));
+            'category', 'genre', 'country', 'list_genre', 'list_category'));
     }
 
     /**
@@ -176,14 +180,16 @@ class MovieController extends Controller
         $genre = Genre::pluck('title', 'id');
         $country = Country::pluck('title', 'id');
         $list_genre = Genre::all();
+        $list_category = Category::all();
 
-        $movie = Movie::with('genres')->find($id);
+        $movie = Movie::with('genres', 'categories')->find($id);
         // Chuyển đổi genre_id thành mảng nếu nó không phải là mảng
         if ($movie && !is_array($movie->genre_id)) {
             $movie->genre_id = json_decode($movie->genre_id, true);
         }
+        $movie_category = $movie->movie_category;
         return view('admin.watching.form', compact(
-            'category', 'genre', 'country', 'movie', 'list_genre'
+            'movie_category', 'category', 'genre', 'country', 'movie', 'list_genre', 'list_category'
         ));
     }
 
@@ -236,7 +242,7 @@ class MovieController extends Controller
         $movie->trailer = $data['trailer'];
         $movie->subtitled = $data['subtitled'];
         $movie->status = $data['status'];
-        $movie->category_id = $data['category_id'];
+        // $movie->category_id = $data['category_id'];
         // $movie->genre_id = $data['genre_id'];
         $movie->country_id = $data['country_id'];
         $movie->slug = $data['slug'];
@@ -283,6 +289,10 @@ class MovieController extends Controller
         if (isset($data['genre']) && is_array($data['genre']) && count($data['genre']) > 0) {
             $movie->genre_id = $data['genre'][0];
         }
+        // Thêm nhiều category
+        foreach($data['category'] as $key => $cate) {
+            $movie->category_id = $cate[0];
+        }
 
         $movie->save();
         // Cập nhật genres vào bảng trung gian
@@ -291,6 +301,7 @@ class MovieController extends Controller
         } else {
             $movie->genres()->detach();
         }
+        $movie->categories()->sync($data['category']);
         return redirect()->route('watching.index')->with('status', 'Cập nhật thành công!');
     }
 
@@ -589,5 +600,53 @@ class MovieController extends Controller
             $movie->save();
         }
         return response()->json(['success' => true, 'message' => 'Sắp xếp thứ tự thành công']);
+    }
+
+    // Cập nhật nhanh Category
+    public function getMovieCategories(Request $request)
+    {
+        $movie = Movie::find($request->movie_id);
+        
+        if ($movie) {
+            $categoryIds = $movie->categories()->pluck('category_id');
+            return response()->json(['categories' => $categoryIds]);
+        }
+
+        return response()->json(['categories' => []]);
+    }
+
+    public function updateCategories(Request $request)
+    {
+        $movie = Movie::find($request->movie_id);
+
+        if ($movie && isset($request->categories)) {
+            $movie->categories()->sync($request->categories);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Cập nhật thành công']);
+    }
+
+    // Cập nhật nhanh Genre
+    public function getMovieGenres(Request $request)
+    {
+        $movie = Movie::find($request->movie_id);
+        
+        if ($movie) {
+            $genreIds = $movie->genres()->pluck('genre_id');
+            return response()->json(['genres' => $genreIds]);
+        }
+
+        return response()->json(['genres' => []]);
+    }
+
+    public function updateGenres(Request $request)
+    {
+        $movie = Movie::find($request->movie_id);
+
+        if ($movie && isset($request->genres)) {
+            $movie->genres()->sync($request->genres);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Cập nhật thành công']);
     }
 }

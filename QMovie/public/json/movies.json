@@ -5,7 +5,7 @@
         "description": "Những Mảnh Ghép Cảm Xúc 2 sẽ quay trở lại phần tâm trí mới của cô bé thiếu niên Riley. Một ngày, trụ sở chính đột ngột bị phá hủy để nhường chỗ cho một thứ hoàn toàn mới: Một cảm xúc mới! Vui Vẻ, Buồn Bã, Giận Dữ, Sợ Hãi và Chán Ghét phải 'chào đón' sự xuất hiện của một loại cảm xúc mới là Lo Âu. Và có vẻ như cô ấy không chỉ xuất hiện một mình.",
         "status": 0,
         "image": "nhung-manh-ghep-cam-xuc80.jfif",
-        "category_id": 1,
+        "category_id": 2,
         "genre_id": 3,
         "country_id": 2,
         "name_eng": "Inside Out 2 (2024)",
@@ -17,7 +17,7 @@
         "duration": "97 Phút",
         "ep_number": 0,
         "date_cr": "2024-06-19 18:48:48",
-        "date_up": "2024-08-03 23:17:20",
+        "date_up": "2024-08-09 10:39:58",
         "year": "2024",
         "views": 0,
         "top_view": null,
@@ -25,11 +25,11 @@
         "position": null,
         "episodes_count": 1,
         "category": {
-            "id": 1,
-            "title": "Phim Mới",
-            "slug": "phim-moi",
-            "description": "Phim Mới cập nhật hằng ngày",
-            "status": 0,
+            "id": 2,
+            "title": "Phim Chiếu Rạp",
+            "slug": "phim-chieu-rap",
+            "description": "Phim Chiếu Rạp cập nhật hằng ngày",
+            "status": 1,
             "position": 0
         },
         "genres": [
@@ -348,6 +348,17 @@
                     "movie_id": 104,
                     "genre_id": 2
                 }
+            },
+            {
+                "id": 12,
+                "title": "Phim 18+",
+                "slug": "phim-18",
+                "description": "Phim thể loại Phim 18+",
+                "status": 1,
+                "pivot": {
+                    "movie_id": 104,
+                    "genre_id": 12
+                }
             }
         ],
         "country": {
@@ -424,6 +435,17 @@
                     "movie_id": 103,
                     "genre_id": 9
                 }
+            },
+            {
+                "id": 12,
+                "title": "Phim 18+",
+                "slug": "phim-18",
+                "description": "Phim thể loại Phim 18+",
+                "status": 1,
+                "pivot": {
+                    "movie_id": 103,
+                    "genre_id": 12
+                }
             }
         ],
         "country": {
@@ -499,6 +521,17 @@
                 "pivot": {
                     "movie_id": 102,
                     "genre_id": 9
+                }
+            },
+            {
+                "id": 12,
+                "title": "Phim 18+",
+                "slug": "phim-18",
+                "description": "Phim thể loại Phim 18+",
+                "status": 1,
+                "pivot": {
+                    "movie_id": 102,
+                    "genre_id": 12
                 }
             }
         ],

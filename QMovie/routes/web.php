@@ -14,6 +14,7 @@ use App\Http\Controllers\ServerMovieController;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\LoginGoogleController;
 use App\Http\Controllers\LoginFacebookController;
+use App\Http\Controllers\LeechMovieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +52,7 @@ Auth::routes();
 Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
 // Route::post('drag-and-drop', [MovieController::class,'resorting'])->name('resorting');
 // đặt name thì url->route()
-Route::get('/watching/list', [MovieController::class, 'list'])->name('watching-list')->middleware('role:admin');
+// Route::get('/watching/list', [MovieController::class, 'list'])->name('watching-list')->middleware('role:admin');
 Route::post('/drag-and-drop', [CategoryController::class,'resorting'])->name('resorting')->middleware('role:admin');
 Route::get('/sort-movie', [MovieController::class,'sortMovie'])->name('sort-movie')->middleware('role:admin');
 Route::post('/resorting-navbar', [MovieController::class,'resortingNavbar'])->name('resorting-navbar')->middleware('role:admin');
@@ -61,6 +62,10 @@ Route::get('/select-movie', [EpisodeController::class, 'selectMovie'])->name('se
 Route::get('/add-episode/{id}', [EpisodeController::class, 'addEpisode'])->name('add-episode')->middleware('role:admin');
 Route::post('/episode/store', [EpisodeController::class, 'storeEpisode'])->name('store-episode')->middleware('role:admin');
 Route::post('/watch-video', [MovieController::class, 'watchVideo'])->name('watch-video')->middleware('role:admin');
+Route::get('/get-movie-categories', [MovieController::class, 'getMovieCategories'])->name('get-movie-categories');
+Route::get('/update-categories', [MovieController::class, 'updateCategories'])->name('update-categories');
+Route::get('/get-movie-genres', [MovieController::class, 'getMovieGenres'])->name('get-movie-genres');
+Route::get('/update-genres', [MovieController::class, 'updateGenres'])->name('update-genres');
 
 Route::post('/update-year-film', [MovieController::class, 'updateYear'])->name('update-year-film')->middleware('role:admin');
 Route::post('/update-topview-film', [MovieController::class, 'updateTopView'])->name('update-topview-film')->middleware('role:admin');
@@ -108,9 +113,10 @@ Route::prefix('google')->name('google.')->group( function(){
 });
 
 // Facebook Login URL
-// Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle']);
-// Route::get('auth/google/callback', [LoginGoogleController::class, 'handleGoogleCallback']);
 Route::prefix('facebook')->name('facebook.')->group( function(){
     Route::get('facebook/login', [LoginFacebookController::class, 'redirectToFacebook'])->name('login');
     Route::any('callback', [LoginFacebookController::class, 'handleFacebookCallback'])->name('callback');
 });
+
+// Routes Leech Movie
+Route::get('/leech-movie', [LeechMovieController::class, 'index'])->name('leech-movie');

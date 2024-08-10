@@ -9,6 +9,7 @@ use App\Models\Episode;
 use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\Movie_Genre;
+use App\Models\Movie_Category;
 use App\Models\Rating;
 use App\Models\Info;
 use App\Models\ServerMovie;
@@ -59,7 +60,14 @@ class IndexController extends Controller
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
             $movie->average_rating = round($rating);
         }
-        $movie = Movie::withCount('episodes')->where('category_id', $cate_slug->id)->where('status', 1)->orderBy('date_up', 'DESC')->paginate(60);
+        // nhiều thể loại
+        $movie_category = Movie_Category::where('category_id', $cate_slug->id)->get();
+        $many_category = [];
+        foreach($movie_category as $key => $movi){
+            $many_category[] = $movi->movie_id;
+        }
+        $movie = Movie::withCount('episodes')->whereIn('id', $many_category)->where('status', 1)->orderBy('date_up', 'DESC')->paginate(60);
+        // $movie = Movie::withCount('episodes')->where('category_id', $cate_slug->id)->where('status', 1)->orderBy('date_up', 'DESC')->paginate(60);
         return view('pages.category', compact('cate_slug', 'movie', 'phimhot_sidebar', 'meta_title', 'meta_description', 'meta_image'));
     }
 
@@ -106,7 +114,7 @@ class IndexController extends Controller
             $movie->average_rating = round($rating);
         }     
         // Lấy thông tin chi tiết của phim dựa vào slug
-        $movie = Movie::withCount('episodes')->with('category','genres','country')->where('slug', $slug)->where('status', 1)->first();
+        $movie = Movie::withCount('episodes')->with('category','genres','country', 'categories')->where('slug', $slug)->where('status', 1)->first();
         // Kiểm tra nếu $movie là null
         if (!$movie) {
             // Bạn có thể chuyển hướng đến trang lỗi hoặc trang không tìm thấy phim

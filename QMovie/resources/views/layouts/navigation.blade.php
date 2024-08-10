@@ -146,6 +146,12 @@
                         </li>
                     </ul>
                 </li>
+                <li class="treeview {{ ($segment=='leech-movie') ? 'active' : '' }}">
+                    <a href="{{route('leech-movie')}}">
+                        <i class='fa fa-file-movie-o'></i>
+                        <span>Leech Phim</span>
+                    </a>
+                </li>
                 <li class="treeview {{ ($segment=='info') ? 'active' : '' }}">
                     <a href="{{route('info.create')}}">
                         <i class="fa fa-info-circle"></i>

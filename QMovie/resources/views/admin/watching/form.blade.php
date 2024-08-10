@@ -95,12 +95,12 @@
                                     {!! Form::select('subtitled', ['0'=>'Vietsub', '1'=>'Thuyết Minh', '2'=>'Eng-sub', '3'=>'Khác'], isset($movie) ? $movie->subtitled : '', ['class'=>'form-control']) !!}
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('Category', 'Danh Mục', []) !!}
-                                    {!! Form::select('category_id', $category, isset($movie) ? $movie->category_id : '', ['class'=>'form-control']) !!}
-                                </div>
-                                <div class="form-group">
                                     {!! Form::label('Country', 'Quốc Gia', []) !!}
                                     {!! Form::select('country_id', $country, isset($movie) ? $movie->country_id : '', ['class'=>'form-control']) !!}
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('Film-hot', 'Độ Hot', []) !!}
+                                    {!! Form::select('hot', ['1'=>'HOT', '0'=>'Không'], isset($movie) ? $movie->hot : '', ['class'=>'form-control']) !!}
                                 </div>
                             </div>
                             <div>
@@ -116,10 +116,6 @@
                                     {!! Form::label('Number-of-ep', 'Số Tập Phim', []) !!}
                                     {!! Form::number('ep_number', isset($movie) ? $movie->ep_number : '', ['class'=>'form-control', 'required'=>'required']) !!}
                                 </div>
-                                <div class="form-group">
-                                    {!! Form::label('Film-hot', 'Độ Hot', []) !!}
-                                    {!! Form::select('hot', ['1'=>'HOT', '0'=>'Không'], isset($movie) ? $movie->hot : '', ['class'=>'form-control']) !!}
-                                </div>
                                 {{-- <div class="form-group">
                                     {!! Form::label('Top-view', 'Top View', []) !!}
                                     {!! Form::select('top_view', ['0'=>'Ngày', '1'=>'Tháng', '2'=>'Năm', NULL=>'Không thuộc Top View'], isset($movie) ? $movie->top_view : '', ['class'=>'form-control']) !!}
@@ -128,7 +124,21 @@
                                     {!! Form::label('Active', 'Trạng Thái', []) !!}
                                     {!! Form::select('status', ['1'=>'Hiển thị', '0'=>'Ẩn'], isset($movie) ? $movie->status : '', ['class'=>'form-control']) !!}
                                 </div>
-                                
+                                <div class="form-group">
+                                    {!! Form::label('Category', 'Danh Mục', []) !!}
+                                    <br>
+                                    {{-- {!! Form::select('category_id', $category, isset($movie) ? $movie->category_id : '', ['class'=>'form-control']) !!} --}}
+                                    @foreach($list_category as $key => $cate)
+                                    <div>
+                                        @if(isset($movie))
+                                            {!! Form::checkbox('category[]', $cate->id, $movie->categories->contains($cate->id), ['class' => 'form-check-input']) !!}
+                                        @else
+                                            {!! Form::checkbox('category[]', $cate->id, false, ['class' => 'form-check-input']) !!}
+                                        @endif
+                                        {!! Form::label('category', $cate->title, ['class' => 'form-check-label']) !!}  
+                                    </div>
+                                    @endforeach
+                                </div>
                             </div>
                             <div>
                                 <div class="form-group">
