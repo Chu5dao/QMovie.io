@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\LoginGoogleController;
 use App\Http\Controllers\LoginFacebookController;
 use App\Http\Controllers\LeechMovieController;
+use App\Http\Controllers\ActivityLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,23 +51,28 @@ Route::post('/them-danh-gia', [IndexController::class, 'addRating'])->name('add-
 //Routes Admin
 Auth::routes();
 Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
-// Route::post('drag-and-drop', [MovieController::class,'resorting'])->name('resorting');
-// đặt name thì url->route()
 // Route::get('/watching/list', [MovieController::class, 'list'])->name('watching-list')->middleware('role:admin');
+// Sắp xếp
 Route::post('/drag-and-drop', [CategoryController::class,'resorting'])->name('resorting')->middleware('role:admin');
 Route::get('/sort-movie', [MovieController::class,'sortMovie'])->name('sort-movie')->middleware('role:admin');
 Route::post('/resorting-navbar', [MovieController::class,'resortingNavbar'])->name('resorting-navbar')->middleware('role:admin');
 Route::post('/resorting-movie', [MovieController::class,'resortingMovie'])->name('resorting-movie')->middleware('role:admin');
 
-Route::get('/select-movie', [EpisodeController::class, 'selectMovie'])->name('select-movie')->middleware('role:admin');
-Route::get('/add-episode/{id}', [EpisodeController::class, 'addEpisode'])->name('add-episode')->middleware('role:admin');
-Route::post('/episode/store', [EpisodeController::class, 'storeEpisode'])->name('store-episode')->middleware('role:admin');
-Route::post('/watch-video', [MovieController::class, 'watchVideo'])->name('watch-video')->middleware('role:admin');
-Route::get('/get-movie-categories', [MovieController::class, 'getMovieCategories'])->name('get-movie-categories');
-Route::get('/update-categories', [MovieController::class, 'updateCategories'])->name('update-categories');
-Route::get('/get-movie-genres', [MovieController::class, 'getMovieGenres'])->name('get-movie-genres');
-Route::get('/update-genres', [MovieController::class, 'updateGenres'])->name('update-genres');
+// Chọn và thêm tập phim
+Route::get('/select-movie', [EpisodeController::class, 'selectMovie'])->name('select-movie')->middleware('role:admin')->middleware('role:admin');
+Route::get('/add-episode/{id}', [EpisodeController::class, 'addEpisode'])->name('add-episode')->middleware('role:admin')->middleware('role:admin');
+Route::post('/episode/store', [EpisodeController::class, 'storeEpisode'])->name('store-episode')->middleware('role:admin')->middleware('role:admin');
 
+// Modal
+Route::post('/watch-video', [MovieController::class, 'watchVideo'])->name('watch-video')->middleware('role:admin')->middleware('role:admin');
+
+// Cập nhật Ajax một-nhiều
+Route::get('/get-movie-categories', [MovieController::class, 'getMovieCategories'])->name('get-movie-categories')->middleware('role:admin');
+Route::get('/update-categories', [MovieController::class, 'updateCategories'])->name('update-categories')->middleware('role:admin');
+Route::get('/get-movie-genres', [MovieController::class, 'getMovieGenres'])->name('get-movie-genres')->middleware('role:admin');
+Route::get('/update-genres', [MovieController::class, 'updateGenres'])->name('update-genres')->middleware('role:admin');
+
+// Cập nhật Ajax
 Route::post('/update-year-film', [MovieController::class, 'updateYear'])->name('update-year-film')->middleware('role:admin');
 Route::post('/update-topview-film', [MovieController::class, 'updateTopView'])->name('update-topview-film')->middleware('role:admin');
 Route::post('/toggle-hot', [MovieController::class, 'toggleHot'])->name('toggle-hot')->middleware('role:admin');
@@ -87,22 +93,20 @@ Route::middleware(['role:admin'])->group(function () {
     Route::resource('info', InfoController::class);
     Route::resource('server', ServerMovieController::class);
 });
+// Phát triển Xóa nhiều
+Route::delete('/destroy-checked', [EpisodeController::class, 'destroyChecked'])->name('destroy-checked')->middleware('role:admin');
 
 // Route catch-all để trả về trang 404 cho các yêu cầu không hợp lệ
 Route::fallback(function() {
     return redirect()->route('404');
 });
 
-Route::get('/test-redis', function () {
-    try {
-        $sessionId = session()->getId();
-        Redis::setex('test-key', 60, 'test-value');
-        $value = Redis::get('test-key');
-        return 'Redis connection is working. Value: ' . $value . ', Session ID: ' . $sessionId;
-    } catch (\Exception $e) {
-        return 'Redis connection failed: ' . $e->getMessage();
-    }
-});
+// Routes Leech Movie (API)
+Route::get('/leech-movie', [LeechMovieController::class, 'index'])->name('leech-movie')->middleware('role:admin');
+Route::get('/leech-detail/{slug}', [LeechMovieController::class, 'leechDetail'])->name('leech-detail')->middleware('role:admin');
+Route::post('/leech-store/{slug}', [LeechMovieController::class, 'leechStore'])->name('leech-store')->middleware('role:admin');
+Route::post('/leech-episode/{slug}', [LeechMovieController::class, 'leechEpisode'])->name('leech-episode')->middleware('role:admin');
+Route::post('/leech-episode-store/{slug}', [LeechMovieController::class, 'leechEpisodeStore'])->name('leech-episode-store')->middleware('role:admin');
 
 // Google Login URL
 // Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle']);
@@ -118,5 +122,50 @@ Route::prefix('facebook')->name('facebook.')->group( function(){
     Route::any('callback', [LoginFacebookController::class, 'handleFacebookCallback'])->name('callback');
 });
 
-// Routes Leech Movie
-Route::get('/leech-movie', [LeechMovieController::class, 'index'])->name('leech-movie');
+// Test Redis
+Route::get('/test-redis', function () {
+    try {
+        $sessionId = session()->getId();
+        Redis::setex('test-key', 60, 'test-value');
+        $value = Redis::get('test-key');
+        return 'Redis connection is working. Value: ' . $value . ', Session ID: ' . $sessionId;
+    } catch (\Exception $e) {
+        return 'Redis connection failed: ' . $e->getMessage();
+    }
+});
+
+// Spatie Laravel Activitylog
+Route::get('/activity-log', [ActivityLogController::class, 'index'])->name('activity-log')->middleware('role:admin');
+
+Route::middleware(['log.user.activity'])->group(function () {
+    Route::get('/', [IndexController::class, 'home'])->name('homepage');
+    Route::get('/home', [IndexController::class, 'home'])->name('home');
+    Route::get('/danh-muc/{slug}', [IndexController::class, 'category'])->name('category');
+    Route::get('/nam/{year}', [IndexController::class, 'year'])->name('year');
+    Route::get('/the-loai/{slug}', [IndexController::class, 'genre'])->name('genre');
+    Route::get('/quoc-gia/{slug}', [IndexController::class, 'country'])->name('country');
+    Route::get('/chi-tiet-phim/{slug}', [IndexController::class, 'detail'])->name('detail');
+    Route::get('/tu-khoa/{tag}', [IndexController::class, 'tag'])->name('tag');
+    Route::get('/tim-kiem', [IndexController::class, 'search'])->name('search');
+    Route::get('/404', [IndexController::class, 'error'])->name('404');
+    Route::get('/xem-phim/{slug}/{tap}', [IndexController::class, 'watching'])->name('watching');
+    Route::get('/loc-phim', [IndexController::class, 'filterFilm'])->name('filter-film');
+});
+Route::middleware(['role:admin', 'log.user.activity'])->group(function () {
+    Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
+    Route::resource('category', CategoryController::class);
+    Route::resource('country', CountryController::class);
+    Route::resource('episode', EpisodeController::class);
+    Route::resource('genre', GenreController::class);
+    Route::resource('watching', MovieController::class);
+    Route::resource('info', InfoController::class);
+    Route::resource('server', ServerMovieController::class);
+
+    Route::get('/leech-movie', [LeechMovieController::class, 'index'])->name('leech-movie');
+    Route::get('/leech-detail/{slug}', [LeechMovieController::class, 'leechDetail'])->name('leech-detail');
+    Route::post('/leech-store/{slug}', [LeechMovieController::class, 'leechStore'])->name('leech-store');
+    Route::post('/leech-episode/{slug}', [LeechMovieController::class, 'leechEpisode'])->name('leech-episode');
+    Route::post('/leech-episode-store/{slug}', [LeechMovieController::class, 'leechEpisodeStore'])->name('leech-episode-store');
+
+    Route::get('/sort-movie', [MovieController::class,'sortMovie'])->name('sort-movie');
+});

@@ -6,15 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         window.Echo.join('online-users')
             .here((users) => {
-                onlineUsersCountElement.innerText = `Account: ${users.length}`;
+                onlineUsersCountElement.innerText = `Tài khoản: ${users.length}`;
             })
             .joining((user) => {
-                const currentCount = parseInt(onlineUsersCountElement.innerText.replace('Account: ', '')) || 0;
-                onlineUsersCountElement.innerText = `Account: ${currentCount + 1}`;
+                const currentCount = parseInt(onlineUsersCountElement.innerText.replace('Tài khoản: ', '')) || 0;
+                onlineUsersCountElement.innerText = `Tài khoản: ${currentCount + 1}`;
             })
             .leaving((user) => {
-                const currentCount = parseInt(onlineUsersCountElement.innerText.replace('Account: ', '')) || 0;
-                onlineUsersCountElement.innerText = `Account: ${currentCount - 1}`;
+                const currentCount = parseInt(onlineUsersCountElement.innerText.replace('Tài khoản: ', '')) || 0;
+                onlineUsersCountElement.innerText = `Tài khoản: ${currentCount - 1}`;
             });
     }
 

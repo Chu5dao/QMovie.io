@@ -48,7 +48,13 @@
                     <article class="thumb grid-item post-38498">
                         <div class="halim-item">
                             <a class="halim-thumb" href="{{route('detail', $hot->slug)}}" title="{{$hot->title}}">
-                                <figure><img class="lazy img-responsive" src="{{asset('uploads/movie/'.$hot->image)}}" alt="{{$hot->title}}" title="{{$hot->title}}"></figure>
+                                <figure>
+                                    @if (Str::startsWith($hot->image, 'https'))
+                                        <img class="lazy img-responsive" src="{{ $hot->image }}" alt="{{$hot->title}}" title="{{$hot->title}}">
+                                    @else
+                                        <img class="lazy img-responsive" src="{{asset('uploads/movie/'.$hot->image)}}" alt="{{$hot->title}}" title="{{$hot->title}}">
+                                    @endif
+                                </figure>
                             @if ($hot->resolution==5)
                                 <span class="is_trailer">
                             @else
@@ -143,7 +149,13 @@
                     <article class="col-md-3 col-sm-3 col-xs-6 thumb grid-item post-37606">
                         <div class="halim-item">
                             <a class="halim-thumb" href="{{route('detail', $movie->slug)}}">
-                                <figure><img class="lazy img-responsive" src="{{asset('uploads/movie/'.$movie->image)}}" alt="{{$movie->title}}" title="{{$movie->title}}"></figure>
+                                <figure>
+                                    @if (Str::startsWith($movie->image, 'https'))
+                                        <img class="lazy img-responsive" src="{{ $movie->image }}" alt="{{$movie->title}}" title="{{$movie->title}}">
+                                    @else
+                                        <img class="lazy img-responsive" src="{{asset('uploads/movie/'.$movie->image)}}" alt="{{$movie->title}}" title="{{$movie->title}}">
+                                    @endif
+                                </figure>
                             @if ($movie->resolution==5)
                                 <span class="is_trailer">
                             @else

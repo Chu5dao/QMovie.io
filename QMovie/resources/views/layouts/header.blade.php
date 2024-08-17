@@ -6,7 +6,7 @@
         <i class="fa fa-bars"></i>
     </button>
     <!--toggle button end-->
-    <div class="profile_details_left">
+    {{-- <div class="profile_details_left">
         <!--notifications of menu start -->
         <ul class="nofitications-dropdown">
         <li class="dropdown head-dpdn">
@@ -225,7 +225,7 @@
         </li>
         </ul>
         <div class="clearfix"></div>
-    </div>
+    </div> --}}
     <!--notification menu end -->
     <div class="clearfix"></div>
     </div>

@@ -242,6 +242,7 @@ class MovieController extends Controller
         $movie->trailer = $data['trailer'];
         $movie->subtitled = $data['subtitled'];
         $movie->status = $data['status'];
+        $movie->ep_number = $data['ep_number'];
         // $movie->category_id = $data['category_id'];
         // $movie->genre_id = $data['genre_id'];
         $movie->country_id = $data['country_id'];
@@ -288,10 +289,16 @@ class MovieController extends Controller
         // Thêm thể loại đầu tiên vào genre_id
         if (isset($data['genre']) && is_array($data['genre']) && count($data['genre']) > 0) {
             $movie->genre_id = $data['genre'][0];
+        }else{
+            return redirect()->back()->withErrors('Không tìm thấy Thể loại!');
         }
         // Thêm nhiều category
-        foreach($data['category'] as $key => $cate) {
-            $movie->category_id = $cate[0];
+        if (isset($data['category']) && is_array($data['category']) && count($data['category']) > 0){
+            foreach($data['category'] as $key => $cate) {
+                $movie->category_id = $cate[0];
+            }
+        }else{
+            return redirect()->back()->withErrors('Không tìm thấy Danh mục!');
         }
 
         $movie->save();
@@ -436,9 +443,16 @@ class MovieController extends Controller
                 $output .= '<div id="halim-ajax-popular-post" class="popular-post">
                                 <div class="item post-37176">
                                     <a href="'.url('chi-tiet-phim/'.$mov->slug).'" title="'.$mov->title.'">
-                                        <div class="item-link">
-                                            <img src="'.url('uploads/movie/'.$mov->image).'" alt="'.$mov->title.'" title="'.$mov->title.'" />
-                                        <span class="is_trailer" style="background: #365979;">'.$text.'</span>
+                                        <div class="item-link">';
+
+                $image_check = substr($mov->image,0,5);
+                if ($image_check == 'https') {
+                    $output .= '<img src="'.$mov->image.'" alt="'.$mov->title.'">';
+                }else {
+                    $output .= '<img src="'.url('uploads/movie/'.$mov->image).'" alt="'.$mov->title.'" title="'.$mov->title.'" />';
+                }
+
+                $output .=' <span class="is_trailer" style="background: #365979;">'.$text.'</span>
                                     </div>
                                     <p class="title">'.$mov->title.'</p>
                                 </a>
@@ -559,8 +573,14 @@ class MovieController extends Controller
         $video = Episode::where('movie_id', $data['movie_id'])
             ->where('episode', $data['episode_id'])
             ->first();
+        if ($movie->ep_number == 0 || $movie->ep_number == 1 ) {
+            $show_episode = 'Full';
+        } else {
+            $show_episode = $video->episode;
+        }
     
-        $output['video_title'] = $movie->title . ' - Tập ' . $video->episode;
+        $output['video_title'] = $movie->title . ' - Tập ' . $show_episode;
+        // $output['video_title'] = $movie->title . ' - Tập ' . $video->episode;
         $output['video_desc'] = $movie->description;
         $output['video_link'] = '<iframe width="560" height="300" src="'.$video->link.'" frameborder="0" allowfullscreen></iframe>';
     
@@ -569,9 +589,22 @@ class MovieController extends Controller
     public function sortMovie() {
         $categories = Category::orderBy('position', 'ASC')->get();
         $category_title = [];
+        // foreach ($categories as $category_home) {
+        //     // Lấy 8 phim thuộc mỗi danh mục có status = 1
+        //     $movies = Movie::withCount('episodes')->where('category_id', $category_home->id)
+        //                 ->where('status', 1)
+        //                 ->orderBy('id', 'DESC')
+        //                 ->take(8)
+        //                 ->get();
+        //     $category_title[] = [
+        //         'category_homepage' => $category_home,
+        //         'movies' => $movies
+        //     ];
+        // }
         foreach ($categories as $category_home) {
-            // Lấy 8 phim thuộc mỗi danh mục có status = 1
-            $movies = Movie::withCount('episodes')->where('category_id', $category_home->id)
+            // Lấy 8 phim thuộc mỗi danh mục
+            $movies = $category_home->movies()
+                        ->withCount('episodes')
                         ->where('status', 1)
                         ->orderBy('id', 'DESC')
                         ->take(8)
@@ -649,4 +682,5 @@ class MovieController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Cập nhật thành công']);
     }
+
 }

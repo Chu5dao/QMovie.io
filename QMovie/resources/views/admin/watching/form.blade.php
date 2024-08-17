@@ -75,7 +75,11 @@
                                     ]) !!}
                                     @if(isset($movie))
                                         {!! Form::hidden('current_image', $movie->image) !!}
-                                        <img style="margin-top:6px;"  width="22%" src="{{asset('uploads/movie/'.$movie->image)}}" alt="{{$movie->title}}">
+                                        @if (Str::startsWith($movie->image, 'https'))
+                                            <img style="margin-top:6px;" width="22%" src="{{ $movie->image }}" alt="{{$movie->title}}">
+                                        @else
+                                            <img style="margin-top:6px;" width="22%" src="{{asset('uploads/movie/'.$movie->image)}}" alt="{{$movie->title}}">
+                                        @endif
                                     @endif
                                 </div>
                                 {!! Form::hidden('year', isset($movie->year) ? $movie->year : date('Y')) !!}

@@ -56,7 +56,11 @@
                         @endif --}}
                         <div class="movie_info col-xs-12">
                             <div class="movie-poster col-md-3">
-                                <img class="movie-thumb" src="{{ asset('uploads/movie/' . $movie->image) }}" alt="{{ $movie->title }}">
+                                @if (Str::startsWith($movie->image, 'https'))
+                                    <img class="movie-thumb" src="{{ $movie->image }}" alt="{{ $movie->title }}">
+                                @else
+                                    <img class="movie-thumb" src="{{ asset('uploads/movie/' . $movie->image) }}" alt="{{ $movie->title }}">
+                                @endif
                                 @php
                                     if ($movie->ep_number == 0) {
                                         switch ($movie->resolution) {
@@ -202,7 +206,13 @@
                                     <li class="list-info-group-item"><span>Tập mới nhất : </span>
                                         @if ($movie->episodes->isNotEmpty())
                                             @foreach($episode as $key => $ep)
-                                            <a href="{{url('xem-phim/'.$ep->movie->slug.'/tap-'.$ep->episode)}}" rel="tag">Tập {{$ep->episode}}</a>
+                                            <a href="{{url('xem-phim/'.$ep->movie->slug.'/tap-'.$ep->episode)}}" rel="tag">
+                                                @if ($movie->ep_number == 0 || $movie->ep_number == 1)
+                                                    Full
+                                                @else
+                                                    Tập {{$ep->episode}}
+                                                @endif
+                                            </a>
                                             @endforeach
                                         @else
                                             Đang cập nhật
@@ -284,7 +294,21 @@
                     <div class="entry-content htmlwrap clearfix">
                         <div class="video-item halim-entry-box">
                             <article class="item-content">
-                                <iframe width="100%" height="315" src="https://www.youtube.com/embed/{{$movie->trailer}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <iframe width="100%" height="315"
+                                @php
+                                $url_trailer = $movie->trailer;
+                                $url_check = substr($url_trailer, 0, 5);
+                                
+                                if ($url_check === 'https') {
+                                    // Phân tích URL và lấy giá trị sau dấu '='
+                                    parse_str(parse_url($url_trailer, PHP_URL_QUERY), $query);
+                                    $url_trailer = $query['v'] ?? $url_trailer; // Lấy giá trị 'v' nếu tồn tại
+                                }else{
+                                    $url_trailer = $url_trailer;
+                                }
+                                @endphp
+                                src="https://www.youtube.com/embed/{{$url_trailer}}" 
+                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                             </article>
                         </div>
                     </div>
@@ -315,7 +339,13 @@
                         <article class="thumb grid-item post-38498">
                             <div class="halim-item">
                                 <a class="halim-thumb" href="{{route('detail', $m_related->slug)}}" title="{{$m_related->title}}">
-                                    <figure><img class="lazy img-responsive" src="{{asset('uploads/movie/'.$m_related->image)}}" alt="{{$m_related->title}}" title="{{$m_related->title}}"></figure>
+                                    <figure>
+                                        @if (Str::startsWith($m_related->image, 'https'))
+                                            <img class="lazy img-responsive" src="{{ $m_related->image }}" alt="{{$m_related->title}}" title="{{$m_related->title}}">
+                                        @else
+                                            <img class="lazy img-responsive" src="{{asset('uploads/movie/'.$m_related->image)}}" alt="{{$m_related->title}}" title="{{$m_related->title}}">
+                                        @endif
+                                    </figure>
                                 @if ($m_related->resolution==5)
                                     <span class="is_trailer">
                                 @else

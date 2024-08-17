@@ -84,7 +84,11 @@
                     <div class="item post-37176">
                         <a href="{{route('detail', $hot_sidebar->slug)}}" title="{{$hot_sidebar->title}}">
                             <div class="item-link">
-                                <img src="{{asset('uploads/movie/'.$hot_sidebar->image)}}" alt="{{$hot_sidebar->title}}" title="{{$hot_sidebar->title}}" />
+                                @if (Str::startsWith($hot_sidebar->image, 'https'))
+                                    <img src="{{ $hot_sidebar->image }}" alt="{{$hot_sidebar->title}}" title="{{$hot_sidebar->title}}" />
+                                @else
+                                    <img src="{{asset('uploads/movie/'.$hot_sidebar->image)}}" alt="{{$hot_sidebar->title}}" title="{{$hot_sidebar->title}}" />
+                                @endif
                                 <span class="is_trailer">
                                     @switch($hot_sidebar->resolution)
                                     @case(0)

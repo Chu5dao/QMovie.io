@@ -13,12 +13,12 @@
     + JQuery, Ajax, DataTables
     + Tích hợp Comment, Like, Share, Bookmark, Meta seo,... của Facebook
     + Laravel mix, Laravel Laravel WebSockets, Pusher và Laravel Echo
-    + Redis
+    + Redis, laravel-activitylog (gồm các gói hỗ trợ jenssegers/agent, guzzlehttp/guzzle)
 - Các công nghệ có thể tích hợp:
     + Toastr (Yoeunes): https://github.com/yoeunes/toastr
     + Site map: https://github.com/LaraPalCom/laravel-sitemap
 - Các phần dự án sẽ phát triển:
-    + Sử dụng các công cụ Analytics, Third-Party Services tích hợp để quản lý lượt xem, rating, traffic của website
+    + Sử dụng các công cụ Analytics, Third-Party Services tích hợp để quản lý lượt xem, traffic của website,...
     + Sử dụng các bên thứ ba bên hỗ trợ quảng cáo
     + Thêm Đạo diễn, Diễn viên
     + ...
@@ -46,7 +46,7 @@ DB_USERNAME=root
 DB_PASSWORD=
 ?>
 ```
-Sử dụng Xampp để tạo và thêm dữ liệu bảng qmovie (cùng tên file  dữ liệu qmovie.sql)
+Sử dụng Xampp để tạo và thêm dữ liệu bảng qmovie (cùng tên file dữ liệu qmovie.sql)
 
 # CÁC CHỨC NĂNG TRONG DỰ ÁN
 1. Người dùng
@@ -74,12 +74,3 @@ Sử dụng Xampp để tạo và thêm dữ liệu bảng qmovie (cùng tên fi
     - QL Sản phẩm - Thu chi
     - QL Liên hệ
     - QL Nhân viên
-    
-Thẻ test:
-
-| Ngân hàng     |                 NCB|
-| :------------ |:------------------:|
-| Số thẻ        | 9704198526191432198|
-| Tên chủ thẻ   | NGUYEN VAN A       |
-| Ngày phát hành| 07/15              |
-| Mật khẩu OTP  | 123456             |

@@ -112,7 +112,11 @@
                     <div class="item post-37176">
                         <a href="{{route('detail', $f_trailer->slug)}}" title="{{$f_trailer->title}}">
                             <div class="item-link">
-                                <img src="{{asset('uploads/movie/'.$f_trailer->image)}}" alt="{{$f_trailer->title}}" title="{{$f_trailer->title}}" />
+                                @if (Str::startsWith($f_trailer->image, 'https'))
+                                    <img src="{{asset('uploads/movie/'.$f_trailer->image)}}" alt="{{$f_trailer->title}}" title="{{$f_trailer->title}}" />
+                                @else
+                                    <img src="{{asset('uploads/movie/'.$f_trailer->image)}}" alt="{{$f_trailer->title}}" title="{{$f_trailer->title}}" />
+                                @endif
                                 <span class="is_trailer">
                                     @switch($f_trailer->resolution)
                                     @case(0)

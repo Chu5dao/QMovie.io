@@ -256,6 +256,28 @@ class EpisodeController extends Controller
         return redirect()->back()->with('status', 'Xóa thành công!');
     }
 
+    public function destroyChecked(Request $request)
+    {
+        $episodeIds = $request->input('episode_ids', []);
+        if (!empty($episodeIds)) {
+            $episodes = Episode::whereIn('id', $episodeIds)->get();
+            foreach ($episodes as $episode) {
+                $movie = $episode->movie;
+                $episode->delete();
+                // Cập nhật số lượng tập phim (ep_number) trong bảng Movie
+                $latestEpisode = Episode::where('movie_id', $movie->id)->orderBy('episode', 'desc')->first();
+                if ($latestEpisode) {
+                    $movie->ep_number = $latestEpisode->episode;
+                } else {
+                    $movie->ep_number = 0;
+                }
+                $movie->save();
+            }
+            return redirect()->back()->with('status', 'Xóa thành công các tập phim đã chọn!');
+        }
+        return redirect()->back()->withErrors('Vui lòng chọn ít nhất một tập phim để xóa.');
+    }
+    
     public function selectMovie(Request $request) // check echo ở Network
     {
         $id = $request->query('id'); // Lấy id từ query string

@@ -36,7 +36,13 @@
                     <article class="col-md-3 col-sm-3 col-xs-6 thumb grid-item post-27021">
                         <div class="halim-item">
                             <a class="halim-thumb" href="{{route('detail', $mov->slug)}}" title="{{$mov->title}}">
-                                <figure><img class="lazy img-responsive" src="{{asset('uploads/movie/'.$mov->image)}}" alt="{{$mov->title}}" title="{{$mov->title}}"></figure>
+                                <figure>
+                                    @if (Str::startsWith($mov->image, 'https'))
+                                        <img class="lazy img-responsive" src="{{ $mov->image }}" alt="{{$mov->title}}" title="{{$mov->title}}">
+                                    @else
+                                        <img class="lazy img-responsive" src="{{asset('uploads/movie/'.$mov->image)}}" alt="{{$mov->title}}" title="{{$mov->title}}">
+                                    @endif
+                                </figure>
                             @if ($mov->resolution==5)
                                 <span class="is_trailer">
                             @else

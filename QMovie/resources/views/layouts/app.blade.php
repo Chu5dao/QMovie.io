@@ -1187,6 +1187,15 @@
                     $('.dataTables_info').css('position', 'sticky').css('bottom', '0').css('background-color', 'white').css('z-index', '1').css('padding', '10px 0');
                 }
 
+                // Bảng ở danh sách Leech
+                if ($.fn.DataTable.isDataTable('#table_leech')) {
+                    $('#table_leech').DataTable().destroy();
+                }
+                $('#table_leech').DataTable({
+                    responsive: true,
+                    fixedHeader: true,
+                });
+
                 let tableWrapper = document.getElementById('table-wrapper');
                 let isDown = false;
                 let startX;
@@ -1274,6 +1283,31 @@
                     $('#video_desc').html(data.video_desc);
                     $('#videoModal').modal('show');
                 }
+            });
+        });
+    </script>
+
+    // Xóa bằng checkbox
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkAll = document.getElementById('checkAll');
+            const checkboxes = document.querySelectorAll('.episode-checkbox');
+
+            checkAll.addEventListener('change', function () {
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = checkAll.checked;
+                });
+            });
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    if (!checkbox.checked) {
+                        checkAll.checked = false;
+                    }
+                    if (document.querySelectorAll('.episode-checkbox:checked').length === checkboxes.length) {
+                        checkAll.checked = true;
+                    }
+                });
             });
         });
     </script>

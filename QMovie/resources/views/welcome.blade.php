@@ -469,20 +469,37 @@
                   $.getJSON('{{ url("json/movies.json") }}', function(data) {
                      $.each(data, function(key, value) {
                         if (value.title.search(expression) != -1 || value.description.search(expression) != -1) {
-                           $('.ui-autocomplete').css('display', 'inherit');
-                           $('.ui-autocomplete').append(
-                              '<li style="cursor:pointer; max-height: 200px;" class="list-group-item link-class">' +
-                              '<a style="display:flex;" href="/chi-tiet-phim/' + value.slug + '">' +
-                              '<img src="' + '{{ url("uploads/movie/") }}/' + value.image + '" style="width: 100px; height: 130px;" class="" />' +
-                              '<div style="flex-direction: column; margin-left: 2px;">' +
-                              '<h4  width="100%">' + value.title + '</h4>' +
-                              '<span style="display: -webkit-box; max-height: 8.2rem; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; -webkit-line-clamp: 5; line-height: 1.6rem;" class="text-muted">' +
-                              '| ' + value.description +
-                              '</span>' +
-                              '</div>' +
-                              '</a>' +
-                              '</li>'
-                           );
+                           if (value.image.startsWith('https')) { 
+                              $('.ui-autocomplete').css('display', 'inherit');
+                              $('.ui-autocomplete').append(
+                                 '<li style="cursor:pointer; max-height: 200px;" class="list-group-item link-class">' +
+                                 '<a style="display:flex;" href="/chi-tiet-phim/' + value.slug + '">' +
+                                 '<img src="' + value.image + '" style="width: 100px; height: 130px;" class="" />' +
+                                 '<div style="flex-direction: column; margin-left: 2px;">' +
+                                 '<h4  width="100%">' + value.title + '</h4>' +
+                                 '<span style="display: -webkit-box; max-height: 8.2rem; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; -webkit-line-clamp: 5; line-height: 1.6rem;" class="text-muted">' +
+                                 '| ' + value.description +
+                                 '</span>' +
+                                 '</div>' +
+                                 '</a>' +
+                                 '</li>'
+                              );
+                           } else {
+                              $('.ui-autocomplete').css('display', 'inherit');
+                              $('.ui-autocomplete').append(
+                                 '<li style="cursor:pointer; max-height: 200px;" class="list-group-item link-class">' +
+                                 '<a style="display:flex;" href="/chi-tiet-phim/' + value.slug + '">' +
+                                 '<img src="' + '{{ url("uploads/movie/") }}/' + value.image + '" style="width: 100px; height: 130px;" class="" />' +
+                                 '<div style="flex-direction: column; margin-left: 2px;">' +
+                                 '<h4  width="100%">' + value.title + '</h4>' +
+                                 '<span style="display: -webkit-box; max-height: 8.2rem; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; -webkit-line-clamp: 5; line-height: 1.6rem;" class="text-muted">' +
+                                 '| ' + value.description +
+                                 '</span>' +
+                                 '</div>' +
+                                 '</a>' +
+                                 '</li>'
+                              );
+                           }
                         }
                      });
                   }).done(function() {

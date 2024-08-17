@@ -236,7 +236,14 @@
                                 {{-- <td>{{$movie->slug}}</td> --}}
                                 <td class="custom-width">
                                     <div class="custom-width-image">
-                                        <img src="{{asset('uploads/movie/'.$movie->image)}}" alt="{{$movie->title}}">
+                                        @php
+                                            $image_check = substr($movie->image,0,5);
+                                        @endphp
+                                        @if ($image_check == 'https')
+                                            <img src="{{$movie->image}}" alt="{{$movie->title}}">
+                                        @else
+                                            <img src="{{asset('uploads/movie/'.$movie->image)}}" alt="{{$movie->title}}">
+                                        @endif
                                         <input class="fix-text" type="file" name="" id="file-{{$movie->id}}" data-movie_id={{$movie->id}} class="form-control-file file_image" accept="image/*">
                                     </div>
                                 </td>
@@ -381,37 +388,94 @@
                                 <td>{{$movie->duration}}</td>
                                 <td><center>{{$movie->ep_number}}</center></td>
                                 <td> 
-                                    @if ($movie->ep_number == 0)
-                                        Tập Lẻ 
-                                        @if ($movie->episodes->count() == 1)
-                                            - Hoàn Thành
+                                    @switch(true)
+                                        @case($movie->ep_number == 0 || $movie->ep_number == 1)
+                                            Tập Lẻ 
+                                            @if ($movie->episodes->count() == 1)
+                                                - Hoàn Thành
+                                                <br>
+                                                <div class="fix-text">
+                                                @foreach($movie->episodes as $episode_list)
+                                                    <a style="color: #fff"
+                                                        class="show_video" 
+                                                        data-movie_video_id="{{ $episode_list->movie_id }}"
+                                                        data-video_episode="{{ $episode_list->episode }}">
+                                                        <span class="badge badge-dark">{{ $episode_list->episode }}</span>
+                                                    </a>
+                                                @endforeach
+                                                </div>
+                                            @else
+                                                - Đang cập nhật
+                                                <br>
+                                                <a href="{{ route('add-episode', $movie->id) }}">
+                                                    <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>
+                                                </a>
+                                            @endif
+                                            @break
+
+                                        @case($movie->episodes && $movie->episodes->count() == $movie->ep_number)
+                                            Hoàn Thành
                                             <br>
-                                            @foreach($movie->episodes as $key => $episode_list)
-                                            <a style="color: #fff"
-                                                class="show_video" 
-                                                data-movie_video_id="{{ $episode_list->movie_id }}"
-                                                data-video_episode="{{ $episode_list->episode }}">
-                                                <span class="badge badge-dard">{{$episode_list->episode}}</span>
-                                            </a>
+                                            <div class="fix-text">
+                                            @foreach($movie->episodes as $episode_list)
+                                                <a style="color: #fff"
+                                                    class="show_video" 
+                                                    data-movie_video_id="{{ $episode_list->movie_id }}"
+                                                    data-video_episode="{{ $episode_list->episode }}">
+                                                    <span class="badge badge-dark">{{ $episode_list->episode }}</span>
+                                                </a>
                                             @endforeach
-                                        @else
-                                            - Đang cập nhật
+                                            </div>
+                                            @break
+
+                                        @case($movie->episodes && $movie->episodes->count() < $movie->ep_number)
+                                            @if ($movie->episodes->count()>0)
+                                                <div class="fix-text">
+                                                @foreach($movie->episodes as $episode_list)
+                                                    <a style="color: #fff"
+                                                        class="show_video" 
+                                                        data-movie_video_id="{{ $episode_list->movie_id }}"
+                                                        data-video_episode="{{ $episode_list->episode }}">
+                                                        <span class="badge badge-dark">{{ $episode_list->episode }}</span>
+                                                    </a>
+                                                @endforeach
+                                                </div>
+                                                <br>
+                                                <a href="{{ route('add-episode', $movie->id) }}">
+                                                    <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>
+                                                </a>
+                                            @else
+                                                Chưa có tập phim nào
+                                                <br>
+                                                <a href="{{ route('add-episode', $movie->id) }}">
+                                                    <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>
+                                                </a>
+                                            @endif
+                                            @break
+
+                                        @case($movie->episodes && $movie->episodes->count() > $movie->ep_number)
+                                            Hoàn Thành
+                                            Tập đã thêm trên 2 Server
                                             <br>
-                                        <a href="{{route('add-episode', $movie->id)}}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i></a>
-                                        @endif
-                                    @else
-                                        {{-- {{$movie->episodes_count}}/{{$movie->ep_number}} Tập --}}
-                                        @foreach($movie->episodes as $key => $episode_list)
-                                            <a style="color: #fff"
-                                                class="show_video" 
-                                                data-movie_video_id="{{ $episode_list->movie_id }}"
-                                                data-video_episode="{{ $episode_list->episode }}">
-                                                <span class="badge badge-dard">{{$episode_list->episode}}</span>
+                                            <div class="fix-text">
+                                            @foreach($movie->episodes as $episode_list)
+                                                <a style="color: #fff"
+                                                    class="show_video" 
+                                                    data-movie_video_id="{{ $episode_list->movie_id }}"
+                                                    data-video_episode="{{ $episode_list->episode }}">
+                                                    <span class="badge badge-dark">{{ $episode_list->episode }}</span>
+                                                </a>
+                                            @endforeach
+                                            </div>
+                                            <br>
+                                            <a href="{{ route('add-episode', $movie->id) }}">
+                                                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>
                                             </a>
-                                        @endforeach
-                                        <br>
-                                        <a href="{{route('add-episode', $movie->id)}}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i></a>
-                                    @endif
+                                            @break
+
+                                        @default
+                                            Lỗi chưa xác định
+                                    @endswitch
                                 </td>
 
                                 <td>

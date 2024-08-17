@@ -73,7 +73,13 @@
                             @foreach($cate_home['movies']->sortBy('position') as $key => $movie)
                             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 well" id="{{ $movie->id }}">
                                 <div class="box_film">
-                                    <figure><img class="fix-image" src="{{asset('uploads/movie/'.$movie->image)}}" alt="{{$movie->title}}" title="{{$movie->title}}"></figure>
+                                    <figure>
+                                        @if (Str::startsWith($movie->image, 'https'))
+                                            <img class="fix-image" src="{{ $movie->image }}" alt="{{$movie->title}}" title="{{$movie->title}}">
+                                        @else
+                                            <img class="fix-image" src="{{asset('uploads/movie/'.$movie->image)}}" alt="{{$movie->title}}" title="{{$movie->title}}">
+                                        @endif
+                                    </figure>
                                     <p class="entry-title">{{$movie->title}}</p>
                                     <p class="original_title">{{$movie->name_eng}}</p>
                                 </div>

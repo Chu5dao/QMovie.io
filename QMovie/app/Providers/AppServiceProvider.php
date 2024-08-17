@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Services\ActivityLogService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,7 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(ActivityLogService::class, function ($app) {
+            return new ActivityLogService();
+        });
     }
 
     /**

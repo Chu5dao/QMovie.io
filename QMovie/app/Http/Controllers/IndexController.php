@@ -24,17 +24,35 @@ class IndexController extends Controller
         $info = Info::find(1);
         $meta_title = $info->title;
         $meta_description = $info->description;
-        $meta_image = url('uploads/logo/ffz7gikh3941.png');
+        $meta_image = url('uploads/logo/' . $info->logo_footer);
 
         $phimhot = Movie::withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->get();
         // Lấy danh sách danh mục và kèm theo phim thuộc từng danh mục
         // $category_title = Category::orderBy('id')->get();
+
         // Lấy danh sách các danh mục
         $categories = Category::orderBy('position', 'ASC')->get();
+        // Chưa cập nhật lấy phim thuộc nhiều category
+        // $category_title = [];
+        // foreach ($categories as $category_home) {
+        //     // Lấy 8 phim thuộc mỗi danh mục có status = 1 trong bảng Movie
+        //     $movies = Movie::withCount('episodes')->where('category_id', $category_home->id)
+        //                 ->where('status', 1)
+        //                 ->orderBy('id', 'DESC')
+        //                 ->take(8)
+        //                 ->get();
+        //     $category_title[] = [
+        //         'category_homepage' => $category_home,
+        //         'movies' => $movies
+        //     ];
+        // }
+
+        // Lấy danh sách các danh mục và kèm theo phim thuộc từng danh mục
         $category_title = [];
         foreach ($categories as $category_home) {
-            // Lấy 8 phim thuộc mỗi danh mục có status = 1
-            $movies = Movie::withCount('episodes')->where('category_id', $category_home->id)
+            // Lấy 8 phim thuộc mỗi danh mục
+            $movies = $category_home->movies()
+                        ->withCount('episodes')
                         ->where('status', 1)
                         ->orderBy('id', 'DESC')
                         ->take(8)
@@ -45,22 +63,23 @@ class IndexController extends Controller
             ];
         }
 
-        $category_home = Category::with('movie')->orderBy('id')->where('status', 1)->get(); // đã bỏ vì Ẩn Phim mới Body
+        // $category_home = Category::with('movie')->orderBy('id')->where('status', 1)->get(); // đã bỏ vì Ẩn Phim mới Body
         return view('pages.home', compact('phimhot', 'category_title', 'meta_title', 'meta_description', 'meta_image'));
     }
     // trang category
     public function category($slug){
+        $info = Info::find(1);
         $cate_slug = Category::where('slug', $slug)->first();
         $meta_title = $cate_slug->title;
         $meta_description = $cate_slug->description;
-        $meta_image = url('uploads/logo/ffz7gikh3941.png');
+        $meta_image = url('uploads/logo/' . $info->logo_footer);
 
         $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
             $movie->average_rating = round($rating);
         }
-        // nhiều thể loại
+        // nhiều danh mục
         $movie_category = Movie_Category::where('category_id', $cate_slug->id)->get();
         $many_category = [];
         foreach($movie_category as $key => $movi){
@@ -72,10 +91,11 @@ class IndexController extends Controller
     }
 
     public function genre($slug){
+        $info = Info::find(1);
         $genre_slug = Genre::where('slug', $slug)->first();
         $meta_title = $genre_slug->title;
         $meta_description = $genre_slug->description;
-        $meta_image = url('uploads/logo/ffz7gikh3941.png');
+        $meta_image = url('uploads/logo/' . $info->logo_footer);
         
         $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
@@ -93,10 +113,11 @@ class IndexController extends Controller
     }
 
     public function country($slug){
+        $info = Info::find(1);
         $country_slug = Country::where('slug', $slug)->first();
         $meta_title = $country_slug->title;
         $meta_description = $country_slug->description;
-        $meta_image = url('uploads/logo/ffz7gikh3941.png');
+        $meta_image = url('uploads/logo/' . $info->logo_footer);
 
         $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
@@ -238,9 +259,10 @@ class IndexController extends Controller
     }
 
     public function year($year){
+        $info = Info::find(1);
         $meta_title = 'Năm phim: '.$year;
         $meta_description = 'Tìm phim năm: '.$year;
-        $meta_image = url('uploads/logo/ffz7gikh3941.png');
+        $meta_image = url('uploads/logo/' . $info->logo_footer);
         
         $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
@@ -253,9 +275,10 @@ class IndexController extends Controller
     }
 
     public function tag($tag){
+        $info = Info::find(1);
         $meta_title = $tag;
         $meta_description = $tag;
-        $meta_image = url('uploads/logo/ffz7gikh3941.png');
+        $meta_image = url('uploads/logo/' . $info->logo_footer);
 
         $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
@@ -268,6 +291,7 @@ class IndexController extends Controller
     }
 
     public function search(Request $request) {
+        $info = Info::find(1);
         $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
@@ -277,7 +301,7 @@ class IndexController extends Controller
         $movie = Movie::withCount('episodes')->where('title', 'LIKE', '%'.$search.'%')->where('status', 1)->orderBy('date_up', 'DESC')->paginate(60);
         $meta_title = 'Tìm kiếm: '.$search;
         $meta_description ='Tìm kiếm: '.$search;
-        $meta_image = url('uploads/logo/ffz7gikh3941.png');
+        $meta_image = url('uploads/logo/' . $info->logo_footer);
         if ($search) {
             if ($movie->isEmpty()) {
                 // Nếu không có kết quả, trả về view với thông báo không tìm thấy
@@ -296,9 +320,10 @@ class IndexController extends Controller
 
     public function error()
     {
+        $info = Info::find(1);
         $meta_title = '404 not found';
         $meta_description = '404 not found';
-        $meta_image = url('uploads/logo/ffz7gikh3941.png');
+        $meta_image = url('uploads/logo/' . $info->logo_footer);
         $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
@@ -310,6 +335,7 @@ class IndexController extends Controller
 
     public function filterFilm(Request $request)
     {
+        $info = Info::find(1);
         $order_get = $request->query('order', '');
         $genre_get = $request->query('genre', '');
         $country_get = $request->query('country', '');
@@ -318,13 +344,16 @@ class IndexController extends Controller
         // Đặt các giá trị meta
         $meta_title = "Lọc phim";
         $meta_description = "Lọc phim";
-        $meta_image = url('uploads/logo/ffz7gikh3941.png');
+        $meta_image = url('uploads/logo/' . $info->logo_footer);
         // lấy dữ liệu
         // Lấy ra phim và đếm số tập
         $movie_array = Movie::withCount('episodes'); 
         // Nếu có giá trị $genre_get
         if ($genre_get) {
-            $movie_array = $movie_array->where('genre_id', $genre_get);
+            // $movie_array = $movie_array->where('genre_id', $genre_get);
+            $movie_array = $movie_array->whereHas('genres', function ($query) use ($genre_get) {
+                $query->where('genre_id', $genre_get);
+            });
         }
         // Nếu có giá trị $country_get
         if ($country_get) {
@@ -338,8 +367,8 @@ class IndexController extends Controller
         if ($order_get) {
             $movie_array = $movie_array->orderBy($order_get, 'DESC');
         }
-        // Liên kết với bảng 'movie_genre'
-        $movie_array = $movie_array->with('movie_genre');
+        // Liên kết với bảng 'genres'
+        $movie_array = $movie_array->with('genres');
         // Khởi tạo mảng $movie rỗng
         // $movie = array();
         // foreach($movie_array as $mov){

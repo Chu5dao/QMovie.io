@@ -52,6 +52,9 @@ class LoginController extends Controller
      */
     public function authenticated(Request $request, $user)
     {
+        // Reset lại số trang truy cập khi người dùng đăng nhập
+        session()->put('pages_accessed', 1);
+
         if ($user->role === 'admin') {
             return redirect('/admin');
         } elseif ($user->role === 'user') {
@@ -85,5 +88,10 @@ class LoginController extends Controller
         // Optionally, you can remove the user from the online users table
         // Example: Removing the user from the database
         DB::table('online_users')->where('user_id', Auth::id())->delete();
+
+        // Xóa session 'pages_accessed' khi người dùng đăng xuất
+        session()->forget('pages_accessed');
+        
+        return redirect('/login');
     }
 }

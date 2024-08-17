@@ -158,6 +158,12 @@
                         <span>Thông tin webphim</span>
                     </a>
                 </li>
+                <li class="treeview {{ ($segment=='activity-log') ? 'active' : '' }}">
+                    <a href="{{route('activity-log')}}">
+                        <i class="fa fa-users"></i>
+                        <span>Lượt truy cập</span>
+                    </a>
+                </li>
             </ul>
             @endif
         
