@@ -3,7 +3,7 @@
 @section('content')
 @include('layouts.statistical')
 <br>
-<h2 class="title1">THỐNG KÊ TRẠNG THÁi NGƯỜI DÙNG</h2>
+<h2 class="title1">THỐNG KÊ TRẠNG THÁI NGƯỜI DÙNG</h2>
 <div class="blank-page widget-shadow scroll" id="style-2 div1">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -19,7 +19,7 @@
                                     <th>Tên người dùng</th>
                                     <th>Thiết bị</th>
                                     <th>Hệ điều hành</th>
-                                    <th>IP Address</th>
+                                    <th>Địa chỉ IP</th>
                                     <th>Quốc gia</th>
                                     <th>Truy cập</th>
                                     <th>Thời gian hoạt động</th>

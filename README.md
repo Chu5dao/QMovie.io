@@ -19,7 +19,6 @@
     + Site map: https://github.com/LaraPalCom/laravel-sitemap
 - Các phần dự án sẽ phát triển:
     + Sử dụng các công cụ Analytics, Third-Party Services tích hợp để quản lý lượt xem, traffic của website,...
-    + Sử dụng các bên thứ ba bên hỗ trợ quảng cáo
     + Thêm Đạo diễn, Diễn viên
     + ...
 # Hình ảnh về dự án

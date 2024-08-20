@@ -267,7 +267,7 @@
                 <i class="fa fa-cog"></i> Settings </a>
             </li> --}}
             <li>
-                <a href="#">
+                <a href="{{ route('user.get', ['id' => $authUser]) }}">
                 <i class="fa fa-user"></i> Tài khoản</a>
             </li>
             {{-- <li>

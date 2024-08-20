@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResetPasswordController extends Controller
 {
@@ -26,5 +28,24 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
+    protected function redirectTo()
+    {
+        // Lấy thông tin người dùng hiện tại
+        $user = Auth::user();
+
+        // Kiểm tra vai trò của người dùng và chuyển hướng tương ứng
+        if ($user->role === 'admin' || $user->role === 'contributor') {
+            return '/admin';
+        } else {
+            return '/home'; // hoặc '/'
+        }
+    }
+
+    // public function showResetForm(Request $request, $token = null)
+    // {
+    //     return view('auth.passwords.reset')->with(
+    //         ['token' => $token, 'email' => $request->email]
+    //     );
+    // }
 }

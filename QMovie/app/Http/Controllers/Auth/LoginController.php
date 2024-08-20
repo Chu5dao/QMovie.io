@@ -92,6 +92,6 @@ class LoginController extends Controller
         // Xóa session 'pages_accessed' khi người dùng đăng xuất
         session()->forget('pages_accessed');
         
-        return redirect('/login');
+        return redirect('/');
     }
 }

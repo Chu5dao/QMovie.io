@@ -36,10 +36,17 @@
         </button>
     </form>
 
-    <form action="/reset/password/" class="form-reset">
-        <input type="email" id="resetEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-        <button class="btn btn-primary btn-block" type="submit">Reset Password</button>
-        <a href="#" id="cancel_reset"><i class="fas fa-angle-left"></i> Back</a>
+    <form method="POST" action="{{ route('password.email') }}" class="form-reset">
+        @csrf
+
+        <input type="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Địa chỉ Email" name="email" required="" autofocus="" value="{{ old('email') }}">
+        @error('email')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+        <button class="btn btn-primary btn-block" type="submit">Gửi liên kết đặt lại mật khẩu</button>
+        <a href="#" id="cancel_reset"><i class="fas fa-angle-left"></i> Trở lại</a>
     </form>
     
     <form method="POST" action="{{ route('register') }}" class="form-signup">

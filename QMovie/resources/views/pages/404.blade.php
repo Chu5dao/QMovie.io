@@ -138,6 +138,18 @@
                     overflow-wrap: break-word;
                     white-space: normal; /* Đảm bảo thẻ span sẽ xuống dòng */
                 }
+                @media only screen and (min-width: 1024px) {
+                    /* Adjust the layout and styling of elements here */
+                    .col-sm-12 {
+                        width: 100%;
+                    }
+                }
+                @media only screen and (min-width: 992px) {
+                    /* Adjust the layout and styling of elements here */
+                    .col-sm-12 {
+                        width: 100%;
+                    }
+                }
             </style>
             {{-- <aside id="sidebar" class="col-xs-12 col-sm-12 col-md-2 fix-sidebar-page-error">
                 <div id="halim_tab_popular_videos-widget-7" class="widget halim_tab_popular_videos-widget">

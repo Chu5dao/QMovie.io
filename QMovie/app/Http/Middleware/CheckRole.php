@@ -15,12 +15,15 @@ class CheckRole
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
         if (!Auth::check()) {
             return redirect('login');
         }
-        if (Auth::user()->role != $role) {
+
+        $userRole = Auth::user()->role;
+        // Kiểm tra xem vai trò của người dùng có nằm trong danh sách các vai trò được phép không
+        if (!in_array($userRole, $roles)) {
             abort(403, 'Bạn không có quyền truy cập.');
         }
         return $next($request);

@@ -252,8 +252,43 @@
         </main>
     </div> --}}
     {{-- @if(Auth::check()) --}}
-    @if(Auth::id())
+    @if(Auth::check())
         @include('layouts.main-content')
+    @elseif(request()->is('password/reset/*')) {{-- Kiểm tra nếu đang ở trang reset mật khẩu --}}
+        <style>
+            .main-page.signup-page{
+                margin: 1em auto;
+            }
+        </style>
+        <div class="main-page signup-page">
+            <h2 class="title1">ĐẶT LẠI MẬT KHẨU</h2>
+            <div class="sign-up-row widget-shadow">
+                <form method="POST" action="{{ route('password.update') }}">
+                    @csrf
+                    <input type="hidden" name="token" value="{{ $token }}">
+                    <input type="hidden" name="email" value="{{ $email }}">
+
+                    <h6>Thông tin mật khẩu :</h6>
+                    <div class="sign-u">
+                        <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" placeholder="{{ __('Mật khẩu mới') }}" required="">
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        <div class="clearfix"> </div>
+                    </div>
+                    <div class="sign-u">
+                        <input id="password-confirm" type="password" name="password_confirmation" placeholder="{{ __('Xác nhận mật khẩu') }}" required="">
+                    </div>
+                    <div class="clearfix"> </div>
+                    <div class="sub_home">
+                        <input type="submit" value="Đặt lại">
+                        <div class="clearfix"> </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     @else
         @yield('layouts.form-login')
     @endif
@@ -1287,7 +1322,7 @@
         });
     </script>
 
-    // Xóa bằng checkbox
+    {{-- Xóa bằng checkbox --}}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const checkAll = document.getElementById('checkAll');
@@ -1311,5 +1346,53 @@
             });
         });
     </script>
+    {{-- Chuyển mục lục trang Tài khoản cá nhân --}}
+    @if(Auth::check())
+    <script>
+        $(document).ready(function() {
+            $('#change-password-link').click(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "{{ route('password.change') }}",
+                    type: 'GET',
+                    success: function(response) {
+                        $('#panel-content').html(response);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            $('#change-password').click(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "{{ route('password.change') }}",
+                    type: 'GET',
+                    success: function(response) {
+                        $('#panel-content').html(response);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+            
+            $('#user-info-link').click(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "{{ route('user.content', ['id' => $authUser->id]) }}",
+                    type: 'GET',
+                    success: function(response) {
+                        $('#panel-content').html(response);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    @endif
 </body>
 </html>

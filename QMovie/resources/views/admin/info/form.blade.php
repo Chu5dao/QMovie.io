@@ -18,6 +18,40 @@
             width: 100%;
             padding: 0 16px;
         }
+        @media only screen and (max-width: 768px) {
+            .cstm-frm {
+                display: flex;
+                justify-content: space-around;
+                flex-direction: column;
+            }
+            .cstm-frm div {
+                width: 100%;
+                padding: 0 10px;
+            }
+            .cstm-frm .form-group label {
+                width: 40%; /* adjust label width for smaller screens */
+            }
+            .cstm-frm .form-group input, .cstm-frm .form-group textarea, .cstm-frm .form-group select {
+                width: 60%; /* adjust input width for smaller screens */
+            }
+        }
+        @media only screen and (max-width: 1024px) {
+            .cstm-frm {
+                display: flex;
+                justify-content: space-around;
+                flex-direction: column;
+            }
+            .cstm-frm div {
+                width: 100%;
+                padding: 0 10px;
+            }
+            .cstm-frm .form-group label {
+                width: 40%; /* adjust label width for smaller screens */
+            }
+            .cstm-frm .form-group input, .cstm-frm .form-group textarea, .cstm-frm .form-group select {
+                width: 60%; /* adjust input width for smaller screens */
+            }
+        }
     </style>
     <div class="container-fluid">
         <div class="row justify-content-center">

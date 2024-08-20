@@ -10,17 +10,17 @@
         </button>
         <h1>
             <a class="navbar-brand" href="/admin">
-            <span class=""><img width="18%" src="{{asset('uploads/logo/'.$info->shortcut_icon)}}" alt="Logo {{$info->title}}"></span> {{ config('app.name', 'Laravel') }} <span class="dashboard_text">Trang Admin QMovie</span>
+            <span class=""><img width="18%" src="{{asset('uploads/logo/'.$info->shortcut_icon)}}" alt="Logo {{$info->title}}"></span> {{ config('app.name', 'Laravel') }} <span class="dashboard_text">Hệ thống Admin QMovie</span>
             </a>
         </h1>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            @php
+                $segment = Request::segment(1);
+            @endphp
             @if(auth()->user()->isAdmin('admin'))
             <ul class="sidebar-menu">
                 <li class="header">THANH ĐIỀU HƯỚNG</li>
-                @php
-                    $segment = Request::segment(1);
-                @endphp
                 <li class="treeview {{ ($segment=='admin') ? 'active' : '' }}">
                     <a href="/admin">
                         <i class="fa fa-dashboard"></i>
@@ -146,6 +146,25 @@
                         </li>
                     </ul>
                 </li>
+                <li class="treeview {{ ($segment=='activity-log' || $segment=='admin-users') ? 'active' : '' }}">
+                    <a href="#">
+                        <i class='fa fa-users'></i>
+                        <span>Quản lý người dùng</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="{{route('admin-users.index')}}">
+                                <i class="fa fa-angle-right"></i> Danh sách người dùng
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('activity-log')}}">
+                                <i class="fa fa-angle-right"></i> Lượt truy cập
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="treeview {{ ($segment=='leech-movie') ? 'active' : '' }}">
                     <a href="{{route('leech-movie')}}">
                         <i class='fa fa-file-movie-o'></i>
@@ -158,13 +177,50 @@
                         <span>Thông tin webphim</span>
                     </a>
                 </li>
-                <li class="treeview {{ ($segment=='activity-log') ? 'active' : '' }}">
-                    <a href="{{route('activity-log')}}">
-                        <i class="fa fa-users"></i>
-                        <span>Lượt truy cập</span>
+            </ul>
+            @else
+            <ul class="sidebar-menu">
+                <li class="header">THANH ĐIỀU HƯỚNG</li>
+            <li class="treeview {{ ($segment=='watching' || $segment=='sort-movie') ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-film"></i>
+                    <span>Phim</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="{{route('watching.create')}}">
+                            <i class="fa fa-angle-right"></i> Thêm phim
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('watching.index')}}">
+                            <i class="fa fa-angle-right"></i> Danh sách phim
+                        </a>
+                    </li>
+                </ul>
+            </li>
+                <li class="treeview {{ ($segment=='episode' || $segment=='add-episode') ? 'active' : '' }}">
+                    <a href="#">
+                        <i class="fa fa-video-camera"></i>
+                        <span>Tập phim</span>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="{{route('episode.create')}}">
+                                <i class="fa fa-angle-right"></i> Thêm tập phim
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('episode.index')}}">
+                                <i class="fa fa-angle-right"></i> Danh sách phim (theo tập phim)
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
+            
             @endif
         
         
