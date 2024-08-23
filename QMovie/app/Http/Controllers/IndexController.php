@@ -182,7 +182,7 @@ class IndexController extends Controller
         foreach ($phimhot_sidebar as $movie) {
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
             $movie->average_rating = round($rating);
-        }     
+        }
         // Lấy thông tin chi tiết của phim dựa vào slug
         $movie = Movie::with('category', 'genres', 'country', 'categories')->where('slug', $slug)->where('status', 1)->first();
         // Kiểm tra nếu $movie là null
@@ -204,9 +204,25 @@ class IndexController extends Controller
                 ->orderBy('episode', 'DESC')
                 ->take(3)
                 ->get();
+            // Lấy server từ kết quả
+            $current_server = $server_with_most_episodes->server;
+            // Lấy tập phim đầu tiên từ server này
+            $episode_default = Episode::where('movie_id', $movie->id)
+                ->where('server', $current_server)
+                ->orderBy('episode', 'ASC')
+                ->take(1)
+                ->first();
+
+            if (!$episode_default) {
+                $episode_default = null;
+                session()->flash('detail_status', 'Phim đang cập nhật');
+            }
+                
         } else {
+            // Nếu không có server nào, xử lý phù hợp
             $server = null; // Nếu không có server nào, đặt $server là null
             $episode = collect(); // Nếu không có server nào, tạo một tập rỗng
+            $current_server = null; // Đặt current_server là null
         }
         $meta_title = $movie->title;
         $meta_description = $movie->description;
@@ -222,8 +238,6 @@ class IndexController extends Controller
                 ->orderBy('total_episodes', 'DESC')
                 ->first(); // Lấy server có số tập lớn nhất
         });
-        // Lấy server từ kết quả
-        $current_server = $server_with_most_episodes->server;
         // Lấy tập phim đầu tiên từ server này
         $episode_default = Episode::where('movie_id', $movie->id)
             ->where('server', $current_server)
@@ -265,7 +279,7 @@ class IndexController extends Controller
     }
 
     public function watching($slug, $server, $tap){
-        $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
+        $phimhot_sidebar = Movie::with('ratings')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
             $movie->average_rating = round($rating);
@@ -278,7 +292,6 @@ class IndexController extends Controller
         $meta_description = $movie->description;
         $meta_image = url('uploads/movie/'.$movie->image);
         // ====================================================
-        $movie_related = Movie::withCount('episodes')->with('category','genres','country')->where('category_id', $movie->category->id)->orderby(DB::raw('RAND()'))->whereNotIn('slug',[$slug])->where('status', 1)->get();
         $movie_related = Movie::with('category','genres','country')->where('category_id', $movie->category->id)->orderby(DB::raw('RAND()'))->whereNotIn('slug',[$slug])->where('status', 1)->get();
         // Đếm số lượng tập theo server và lấy server có số lượng tập lớn nhất cho từng phim
         $movie_related->each(function($movies) {
@@ -363,13 +376,22 @@ class IndexController extends Controller
         $meta_description = 'Tìm phim năm: '.$year;
         $meta_image = url('uploads/logo/' . $info->logo_footer);
         
-        $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
+        $phimhot_sidebar = Movie::with('ratings')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
             $movie->average_rating = round($rating);
         }      
         $year = $year;
-        $movie = Movie::withCount('episodes')->where('year', $year)->where('status', 1)->orderBy('date_up', 'DESC')->paginate(60);
+        $movie = Movie::where('year', $year)->where('status', 1)->orderBy('date_up', 'DESC')->paginate(60);
+        // Đếm số lượng tập theo server và lấy server có số lượng tập lớn nhất cho từng phim
+        $movie->each(function($movies) {
+            $movies->max_episodes_server = DB::table('episodes')
+                ->select(DB::raw('server, count(*) as total_episodes'))
+                ->where('movie_id', $movies->id)
+                ->groupBy('server')
+                ->orderBy('total_episodes', 'DESC')
+                ->first(); // Lấy server có số tập lớn nhất
+        });
         return view('pages.year', compact('year','movie', 'phimhot_sidebar', 'meta_title', 'meta_description', 'meta_image'));
     }
 
@@ -379,25 +401,43 @@ class IndexController extends Controller
         $meta_description = $tag;
         $meta_image = url('uploads/logo/' . $info->logo_footer);
 
-        $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
+        $phimhot_sidebar = Movie::with('ratings')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
             $movie->average_rating = round($rating);
         }
         $tag = $tag;
-        $movie = Movie::withCount('episodes')->where('tags', 'LIKE', '%'.$tag.'%')->where('status', 1)->orderBy('date_up', 'DESC')->paginate(60);
+        $movie = Movie::where('tags', 'LIKE', '%'.$tag.'%')->where('status', 1)->orderBy('date_up', 'DESC')->paginate(60);
+        // Đếm số lượng tập theo server và lấy server có số lượng tập lớn nhất cho từng phim
+        $movie->each(function($movies) {
+            $movies->max_episodes_server = DB::table('episodes')
+                ->select(DB::raw('server, count(*) as total_episodes'))
+                ->where('movie_id', $movies->id)
+                ->groupBy('server')
+                ->orderBy('total_episodes', 'DESC')
+                ->first(); // Lấy server có số tập lớn nhất
+        });
         return view('pages.tag', compact('tag', 'movie', 'phimhot_sidebar', 'meta_title', 'meta_description', 'meta_image'));
     }
 
     public function search(Request $request) {
         $info = Info::find(1);
-        $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
+        $phimhot_sidebar = Movie::with('ratings')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
             $movie->average_rating = round($rating);
         }
         $search = $request->input('search');
-        $movie = Movie::withCount('episodes')->where('title', 'LIKE', '%'.$search.'%')->where('status', 1)->orderBy('date_up', 'DESC')->paginate(60);
+        $movie = Movie::where('title', 'LIKE', '%'.$search.'%')->where('status', 1)->orderBy('date_up', 'DESC')->paginate(60);
+        // Đếm số lượng tập theo server và lấy server có số lượng tập lớn nhất cho từng phim
+        $movie->each(function($movies) {
+            $movies->max_episodes_server = DB::table('episodes')
+                ->select(DB::raw('server, count(*) as total_episodes'))
+                ->where('movie_id', $movies->id)
+                ->groupBy('server')
+                ->orderBy('total_episodes', 'DESC')
+                ->first(); // Lấy server có số tập lớn nhất
+        });
         $meta_title = 'Tìm kiếm: '.$search;
         $meta_description ='Tìm kiếm: '.$search;
         $meta_image = url('uploads/logo/' . $info->logo_footer);
@@ -423,7 +463,7 @@ class IndexController extends Controller
         $meta_title = '404 not found';
         $meta_description = '404 not found';
         $meta_image = url('uploads/logo/' . $info->logo_footer);
-        $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
+        $phimhot_sidebar = Movie::with('ratings')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
             $movie->average_rating = round($rating);
@@ -439,17 +479,14 @@ class IndexController extends Controller
         $genre_get = $request->query('genre', '');
         $country_get = $request->query('country', '');
         $year_get = $request->query('year', '');
-
         // Đặt các giá trị meta
         $meta_title = "Lọc phim";
         $meta_description = "Lọc phim";
         $meta_image = url('uploads/logo/' . $info->logo_footer);
-        // lấy dữ liệu
-        // Lấy ra phim và đếm số tập
-        $movie_array = Movie::withCount('episodes'); 
+        // Lấy ra phim
+        $movie_array = Movie::with('genres');
         // Nếu có giá trị $genre_get
         if ($genre_get) {
-            // $movie_array = $movie_array->where('genre_id', $genre_get);
             $movie_array = $movie_array->whereHas('genres', function ($query) use ($genre_get) {
                 $query->where('genre_id', $genre_get);
             });
@@ -466,29 +503,31 @@ class IndexController extends Controller
         if ($order_get) {
             $movie_array = $movie_array->orderBy($order_get, 'DESC');
         }
-        // Liên kết với bảng 'genres'
-        $movie_array = $movie_array->with('genres');
-        // Khởi tạo mảng $movie rỗng
-        // $movie = array();
-        // foreach($movie_array as $mov){
-        //     foreach($mov->movie_genre as $mov_gen){
-        //         $movie = $movie_array->whereIn('genre_id', [$mov_gen->genre_id]);
-        //     }
-        // }
+        // Phân trang trước khi lấy dữ liệu
         $movies = $movie_array->paginate(60);
-        // Kiểm tra số lượng phim được tìm thấy
-        $movies_count = $movies->total();
-
-        $phimhot_sidebar = Movie::with('ratings')->withCount('episodes')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
+        // Tính toán số tập từ các server cho từng bộ phim đã phân trang
+        $movies->getCollection()->transform(function($movie) {
+            $max_episodes_server = DB::table('episodes')
+                ->select('server', DB::raw('count(*) as total_episodes'))
+                ->where('movie_id', $movie->id)
+                ->groupBy('server')
+                ->orderBy('total_episodes', 'DESC')
+                ->first(); // Lấy server có số tập lớn nhất
+    
+            $movie->max_episodes_server = $max_episodes_server;
+            return $movie;
+        });
+        // Lấy phim hot cho sidebar
+        $phimhot_sidebar = Movie::with('ratings')->where('hot', 1)->where('status', 1)->orderBy('date_up', 'DESC')->take(5)->get();
         foreach ($phimhot_sidebar as $movie) {
             $rating = Rating::where('movie_id', $movie->id)->avg('rating');
             $movie->average_rating = round($rating);
         }
+
+        $movies_count = $movies->total();
         // Kiểm tra movies_count
         if ($movies_count === 0) {
             session()->flash('status_filter', 'Không có Phim');
-            return view('pages.show-filter-film', compact('movies', 'meta_title', 'meta_description', 'meta_image', 'phimhot_sidebar'));
-            // return response()->json($movies_count);
         } else {
             return view('pages.show-filter-film', compact('movies', 'meta_title', 'meta_description', 'meta_image', 'phimhot_sidebar'));
         }

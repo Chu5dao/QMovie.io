@@ -100,7 +100,6 @@
                                             Đang cập nhật
                                         @endisset
                                     @endif
-                                    
                                 </span>
                             @endif
                                 <div class="icon_overlay"></div>

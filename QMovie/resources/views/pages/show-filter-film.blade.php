@@ -87,21 +87,24 @@
                                                 Khác
                                        @endswitch
                                     @else
-                                       @switch($mov->subtitled)
-                                          @case(0)
-                                                Vietsub - {{$mov->episodes_count}}/{{$mov->ep_number}}
+                                       @isset($mov->max_episodes_server)
+                                          @switch($mov->subtitled)
+                                             @case(0)
+                                                Vietsub - {{$mov->max_episodes_server->total_episodes}}/{{$mov->ep_number}}
                                                 @break
-                                          @case(1)
-                                                TM - {{$mov->episodes_count}}/{{$mov->ep_number}}
+                                             @case(1)
+                                                TM - {{$mov->max_episodes_server->total_episodes}}/{{$mov->ep_number}}
                                                 @break
-                                          @case(2)
-                                                Eng-sub - {{$mov->episodes_count}}/{{$mov->ep_number}}
+                                             @case(2)
+                                                Eng-sub - {{$mov->max_episodes_server->total_episodes}}/{{$mov->ep_number}}
                                                 @break
-                                          @default
-                                                Khác
-                                       @endswitch
+                                             @default
+                                                Khác - {{$mov->max_episodes_server->total_episodes}}/{{$mov->ep_number}}
+                                          @endswitch
+                                       @else
+                                          Đang cập nhật
+                                       @endisset
                                     @endif
-                                    
                               </span>
                            @endif
                               <div class="icon_overlay"></div>
