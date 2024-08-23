@@ -92,9 +92,15 @@
                                 @elseif (isset($episode_default))
                                     <div class="bwa-content">
                                         <div class="loader"></div>
-                                        <a href="{{ url('xem-phim/' . $movie->slug . '/tap-' . $tapValue) }}" class="bwac-btn">
-                                            <i class="fa fa-play"></i>
-                                        </a>
+                                        @if(isset($server) && isset($tapValue))
+                                            <a href="{{ url('xem-phim/' . $movie->slug . '/server-' . $current_server . '/tap-' . $tapValue) }}" class="bwac-btn">
+                                                <i class="fa fa-play"></i>
+                                            </a>
+                                        @else
+                                        <script>
+                                            alert("Không tìm thấy server");
+                                        </script>
+                                        @endif
                                     </div>
                                 @else
                                     <a href="#watch_trailer" style="display: block" class="watch_trailer btn btn-warning">
@@ -157,7 +163,7 @@
                                             0
                                         @endif
                                         / {{$movie->ep_number}} -
-                                        @if (($movie->ep_number) - ($movie->episodes->count()) == 0)
+                                        @if (($movie->ep_number) - ($movie->episodes->max('episode')) == 0)
                                             Hoàn Thành
                                         @else
                                             Đang cập nhật
@@ -206,12 +212,8 @@
                                     <li class="list-info-group-item"><span>Tập mới nhất : </span>
                                         @if ($movie->episodes->isNotEmpty())
                                             @foreach($episode as $key => $ep)
-                                            <a href="{{url('xem-phim/'.$ep->movie->slug.'/tap-'.$ep->episode)}}" rel="tag">
-                                                @if ($movie->ep_number == 0 || $movie->ep_number == 1)
-                                                    Full
-                                                @else
-                                                    Tập {{$ep->episode}}
-                                                @endif
+                                            <a href="{{url('xem-phim/'.$ep->movie->slug.'/server-'.$server->id.'/tap-'.$ep->episode)}}" rel="tag">
+                                                Tập {{$ep->episode}}
                                             </a>
                                             @endforeach
                                         @else
@@ -388,19 +390,23 @@
                                                     Khác
                                             @endswitch
                                         @else
-                                            @switch($m_related->subtitled)
-                                                @case(0)
-                                                    Vietsub - {{$m_related->episodes_count}}/{{$m_related->ep_number}}
-                                                    @break
-                                                @case(1)
-                                                    TM - {{$m_related->episodes_count}}/{{$m_related->ep_number}}
-                                                    @break
-                                                @case(2)
-                                                    Eng-sub - {{$m_related->episodes_count}}/{{$m_related->ep_number}}
-                                                    @break
-                                                @default
-                                                    Khác
-                                            @endswitch
+                                            @isset($m_related->max_episodes_server)
+                                                @switch($m_related->subtitled)
+                                                    @case(0)
+                                                        Vietsub - {{$m_related->max_episodes_server->total_episodes}}/{{$m_related->ep_number}}
+                                                        @break
+                                                    @case(1)
+                                                        TM - {{$m_related->max_episodes_server->total_episodes}}/{{$m_related->ep_number}}
+                                                        @break
+                                                    @case(2)
+                                                        Eng-sub - {{$m_related->max_episodes_server->total_episodes}}/{{$m_related->ep_number}}
+                                                        @break
+                                                    @default
+                                                        Khác - {{$m_related->max_episodes_server->total_episodes}}/{{$m_related->ep_number}}
+                                                @endswitch
+                                            @else
+                                                Đang cập nhật
+                                            @endisset
                                         @endif
                                     </span>
                                 @endif

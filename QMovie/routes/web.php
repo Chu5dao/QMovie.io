@@ -45,7 +45,8 @@ Route::get('/chi-tiet-phim/{slug}', [IndexController::class, 'detail'])->name('d
 Route::get('/tu-khoa/{tag}', [IndexController::class, 'tag'])->name('tag');
 Route::get('/tim-kiem', [IndexController::class, 'search'])->name('search');
 Route::get('/404', [IndexController::class, 'error'])->name('404');
-Route::get('/xem-phim/{slug}/{tap}', [IndexController::class, 'watching'])->name('watching');
+// Route::get('/xem-phim/{slug}/{tap}', [IndexController::class, 'watching'])->name('watching');
+Route::get('/xem-phim/{slug}/{server}/{tap}', [IndexController::class, 'watching'])->name('watching');
 Route::get('/tap', [IndexController::class, 'episode'])->name('episode-user');
 Route::get('/loc-phim', [IndexController::class, 'filterFilm'])->name('filter-film');
 Route::get('/sap-xep-xu-huong', [MovieController::class, 'filterTopView'])->name('filter-top-view');

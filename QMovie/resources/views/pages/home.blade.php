@@ -97,19 +97,23 @@
                                                 Khác
                                         @endswitch
                                     @else
-                                        @switch($hot->subtitled)
-                                            @case(0)
-                                                Vietsub - {{$hot->episodes_count}}/{{$hot->ep_number}}
-                                                @break
-                                            @case(1)
-                                                TM - {{$hot->episodes_count}}/{{$hot->ep_number}}
-                                                @break
-                                            @case(2)
-                                                Eng-sub - {{$hot->episodes_count}}/{{$hot->ep_number}}
-                                                @break
-                                            @default
-                                                Khác
-                                        @endswitch
+                                        @isset($hot->max_episodes_server)
+                                            @switch($hot->subtitled)
+                                                @case(0)
+                                                    Vietsub - {{$hot->max_episodes_server->total_episodes}}/{{$hot->ep_number}}
+                                                    @break
+                                                @case(1)
+                                                    TM - {{$hot->max_episodes_server->total_episodes}}/{{$hot->ep_number}}
+                                                    @break
+                                                @case(2)
+                                                    Eng-sub - {{$hot->max_episodes_server->total_episodes}}/{{$hot->ep_number}}
+                                                    @break
+                                                @default
+                                                    Khác - {{$hot->max_episodes_server->total_episodes}}/{{$hot->ep_number}}
+                                            @endswitch
+                                        @else
+                                            Đang cập nhật
+                                        @endisset
                                     @endif
                                 </span>
                             @endif
@@ -198,19 +202,23 @@
                                                     Khác
                                             @endswitch
                                         @else
-                                            @switch($movie->subtitled)
-                                                @case(0)
-                                                    Vietsub - {{$movie->episodes_count}}/{{$movie->ep_number}}
-                                                    @break
-                                                @case(1)
-                                                    TM - {{$movie->episodes_count}}/{{$movie->ep_number}}
-                                                    @break
-                                                @case(2)
-                                                    Eng-sub - {{$movie->episodes_count}}/{{$movie->ep_number}}
-                                                    @break
-                                                @default
-                                                    Khác
-                                            @endswitch
+                                            @isset($movie->max_episodes_server)
+                                                @switch($movie->subtitled)
+                                                    @case(0)
+                                                        Vietsub - {{$movie->max_episodes_server->total_episodes}}/{{$movie->ep_number}}
+                                                        @break
+                                                    @case(1)
+                                                        TM - {{$movie->max_episodes_server->total_episodes}}/{{$movie->ep_number}}
+                                                        @break
+                                                    @case(2)
+                                                        Eng-sub - {{$movie->max_episodes_server->total_episodes}}/{{$movie->ep_number}}
+                                                        @break
+                                                    @default
+                                                        Khác
+                                                @endswitch
+                                            @else
+                                                Đang cập nhật
+                                            @endisset
                                         @endif
                                     </span>
                                 @endif

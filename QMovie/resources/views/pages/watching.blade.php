@@ -82,32 +82,32 @@
 
                @if ($movie->ep_number == 0)
                   @foreach($episodes_add as $ep)
-                  @php
-                  $movie_item = $movies_add->firstWhere('id', $ep->movie_id);
-                  switch ($movie_item->resolution) {
-                     case '0':
-                        $tapValue = 'HD';
-                        break;
-                     case '1':
-                        $tapValue = 'SD';
-                        break;
-                     case '2':
-                        $tapValue = 'HD-Cam';
-                        break;
-                     case '3':
-                        $tapValue = 'Cam';
-                        break;
-                     case '4':
-                        $tapValue = 'Full-HD';
-                        break;
-                     default:
-                        $tapValue = 'Trailer';
-                        break;
-                  }
-                  @endphp
-                  @if (Request::is('xem-phim/' . $movie_item->slug . '/tap-' . $tapValue))
-                     <iframe width="100%" height="500" src="{{ $ep->link }}" title="Video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                  @endif
+                     @php
+                     $movie_item = $movies_add->firstWhere('id', $ep->movie_id);
+                     switch ($movie_item->resolution) {
+                        case '0':
+                           $tapValue = 'HD';
+                           break;
+                        case '1':
+                           $tapValue = 'SD';
+                           break;
+                        case '2':
+                           $tapValue = 'HD-Cam';
+                           break;
+                        case '3':
+                           $tapValue = 'Cam';
+                           break;
+                        case '4':
+                           $tapValue = 'Full-HD';
+                           break;
+                        default:
+                           $tapValue = 'Trailer';
+                           break;
+                     }
+                     @endphp
+                     @if (Request::is('xem-phim/' . $movie_item->slug . '/server-' . $current_server->id . '/tap-' . $tapValue))
+                        <iframe width="100%" height="500" src="{{ $ep->link }}" title="Video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                     @endif
                   @endforeach
                @else
                   <iframe width="100%" height="500" src="{{$episode->link}}" title="Video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -181,7 +181,9 @@
                   ">
                      @foreach($server_list as $key => $server)
                      {{-- <li class="nav-item"> --}}
-                        <a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'server-{{ $server->id }}')" id="{{ $key === 0 ? 'defaultOpen' : '' }}"><i class="hl-server"></i> {{ $server->title }}</a>
+                        <a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'server-{{ $server->id }}')" id="{{ $server->id === $current_server->id ? 'defaultOpen' : '' }}">
+                           <i class="hl-server"></i> {{ $server->title }}
+                        </a>
                      {{-- </li> --}}
                      @endforeach
                   </ul>
@@ -275,9 +277,9 @@
                                  }
                               @endphp
                               
-                              <a href="{{ url('xem-phim/' . $movie_item->slug . '/tap-' . $tapValue) }}" class="bwac-btn">
+                              <a href="{{ url('xem-phim/' . $movie_item->slug . '/server-' . $server->id . '/tap-' . $tapValue) }}" class="bwac-btn">
                                  <li class="halim-episode">
-                                    <span class="halim-btn halim-btn-2 halim-info-1-1 box-shadow {{ Request::is('xem-phim/' . $movie_item->slug . '/tap-' . $tapValue) ? 'active' : '' }}"
+                                    <span class="halim-btn halim-btn-2 halim-info-1-1 box-shadow {{ Request::is('xem-phim/' . $movie_item->slug . '/server-' . $server->id . '/tap-' . $tapValue) ? 'active' : '' }}"
                                           data-post-id="{{ $movie_item->id }}"
                                           data-server="{{ $server->id }}"
                                           data-episode="{{ $ep->episode }}"
@@ -371,19 +373,23 @@
                                           Khác
                                     @endswitch
                                  @else
-                                    @switch($m_related->subtitled)
-                                       @case(0)
-                                          Vietsub - {{$m_related->episodes_count}}/{{$m_related->ep_number}}
-                                          @break
-                                       @case(1)
-                                          TM - {{$m_related->episodes_count}}/{{$m_related->ep_number}}
-                                          @break
-                                       @case(2)
-                                          Eng-sub - {{$m_related->episodes_count}}/{{$m_related->ep_number}}
-                                          @break
-                                       @default
-                                          Khác
-                                    @endswitch
+                                    @isset($m_related->max_episodes_server)
+                                       @switch($m_related->subtitled)
+                                          @case(0)
+                                             Vietsub - {{$m_related->max_episodes_server->total_episodes}}/{{$m_related->ep_number}}
+                                             @break
+                                          @case(1)
+                                             TM - {{$m_related->max_episodes_server->total_episodes}}/{{$m_related->ep_number}}
+                                             @break
+                                          @case(2)
+                                             Eng-sub - {{$m_related->max_episodes_server->total_episodes}}/{{$m_related->ep_number}}
+                                             @break
+                                          @default
+                                             Khác - {{$m_related->max_episodes_server->total_episodes}}/{{$m_related->ep_number}}
+                                       @endswitch
+                                    @else
+                                          Đang cập nhật
+                                    @endisset
                                  @endif
                               </span>
                            @endif
@@ -456,8 +462,26 @@
          evt.currentTarget.className += " active";
       }
 
-      // Get the element with id="defaultOpen" and click on it
-      document.getElementById("defaultOpen").click();
+      // Tự động mở tab server hiện tại khi trang được tải
+      var currentServerId = "{{ $current_server->id }}";
+      var tabOpened = false;
+
+      var tablinks = document.getElementsByClassName("tablinks");
+      for (var i = 0; i < tablinks.length; i++) {
+         if (tablinks[i].getAttribute("data-server-id") === currentServerId) {
+            // Mở tab tương ứng với currentServerId
+            var tabName = tablinks[i].getAttribute("onclick").match(/'([^']+)'/)[1];
+            document.getElementById(tabName).style.display = "block";
+            tablinks[i].className += " active";
+            tabOpened = true;
+            break;
+         }
+      }
+
+      // Nếu không có tab nào được mở, mở tab mặc định
+      if (!tabOpened) {
+         document.getElementById("defaultOpen").click();
+      }
    </script>
 @endsection
 

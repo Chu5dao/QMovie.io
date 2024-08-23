@@ -23,7 +23,7 @@
     + QL Quảng cáo
     + Thêm Đạo diễn, Diễn viên
     + ...
-# Hình ảnh về dự án
+# HÌNH ẢNH VỀ DỰ ÁN
 Hình ảnh demo website:
 - Trang chủ
 ![trang-chu](https://github.com/user-attachments/assets/f4e03bc0-b025-48b6-a69e-ced802143e4c)
@@ -91,7 +91,7 @@ Ngoài ra cài đặt các phiên bản ```Redis```, ```WebSockets```,.. có tro
     - QL Người dùng
     - QL API Phim
     - QL Thông tin trang
-4. Các thành phần khác (component)
+4. Các thành phần khác
     - Sắp xếp phim theo cột Thịnh thành (ngày tuần tháng)
     - Lọc Tag phim theo tìm 
     - Popup quảng cáo
