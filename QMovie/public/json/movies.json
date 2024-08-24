@@ -1,5 +1,113 @@
 [
     {
+        "id": 141,
+        "title": "Phòng Kiểm Sát Viên Số 9",
+        "description": "The newly appointed Director of the Juvenile Prosecution Department, Lei Xu, juvenile prosecutor Du Ziyu, clerk Yang Tian, and bailiff Xu Zhangli, along with the team at the Ninth Prosecution Department, tackle juvenile criminal cases. When a routine case takes an unexpected turn, they find themselves investigating a juvenile suspect in an accidental death. As they dig deeper, several seemingly unrelated cases reveal a complex web of connections. The team gradually uncovers the truth, bringing the criminals to justice while working to protect the youth and nurturing hope for a future where their services are no longer needed.",
+        "status": 0,
+        "image": "https://img.ophim.live/uploads/movies/phong-kiem-sat-vien-so-9-thumb.jpg",
+        "category_id": 6,
+        "genre_id": 26,
+        "country_id": 13,
+        "name_eng": "For the Young Ones(2024)",
+        "slug": "phong-kiem-sat-vien-so-9",
+        "tags": "Phòng Kiểm Sát Viên Số 9,phong-kiem-sat-vien-so-9",
+        "hot": 0,
+        "resolution": 0,
+        "subtitled": 0,
+        "duration": "44 Phút / Tập",
+        "ep_number": "18",
+        "date_cr": "2024-08-24 21:06:08",
+        "date_up": "2024-08-24 21:06:08",
+        "year": "2024",
+        "views": 354,
+        "top_view": null,
+        "trailer": "https://www.youtube.com/watch?v=A1FSdVpHxmw",
+        "position": null,
+        "episodes_count": 17,
+        "category": {
+            "id": 6,
+            "title": "Phim Lẻ",
+            "slug": "phim-le",
+            "description": "Phim Lẻ cập nhật hằng ngày",
+            "status": 1,
+            "position": 4
+        },
+        "genres": [
+            {
+                "id": 18,
+                "title": "Hình Sự",
+                "slug": "hinh-su",
+                "description": "Phim thể loại Hình Sự",
+                "status": 1,
+                "pivot": {
+                    "movie_id": 141,
+                    "genre_id": 18
+                }
+            }
+        ],
+        "country": {
+            "id": 13,
+            "title": "Quốc Gia Khác",
+            "slug": "quoc-gia-khac",
+            "description": "Phim Quốc gia khác cập nhật hằng ngày",
+            "status": 1
+        }
+    },
+    {
+        "id": 140,
+        "title": "Lọ Lem 2 Giờ Sáng",
+        "description": "Ha Yun Seo (Shin Hyun Been) has worked hard her whole life: after raising her younger brother alone, she is now a marketing manager at a credit card company. Her life takes a dramatic turn when she discovers that her boyfriend, Seo Ju Won (Moon Sang Min), is the heir to the family that owns the company! Upon learning of their relationship, Ju Won's mother offers Yun Seo money to break up with him, and Yun Seo accepts. However, Ju Won is determined to win her back and will stop at nothing to reclaim her heart. Can Yun Seo and Ju Won overcome obstacles and find their fairytale ending, or will reality tear them apart? Cinderella at 2AM is a 2024 South Korean romance drama directed by Seo Min Jung and Bae Hee Young, adapted from the webtoon of the same name by Algome.",
+        "status": 0,
+        "image": "https://img.ophim.live/uploads/movies/lo-lem-2-gio-sang-thumb.jpg",
+        "category_id": 6,
+        "genre_id": 26,
+        "country_id": 13,
+        "name_eng": "Cinderella at 2AM(2024)",
+        "slug": "lo-lem-2-gio-sang",
+        "tags": "Lọ Lem 2 Giờ Sáng,lo-lem-2-gio-sang",
+        "hot": 0,
+        "resolution": 0,
+        "subtitled": 0,
+        "duration": "50 Phút / Tập",
+        "ep_number": "10",
+        "date_cr": "2024-08-24 21:05:00",
+        "date_up": "2024-08-24 21:05:00",
+        "year": "2024",
+        "views": 1,
+        "top_view": null,
+        "trailer": "",
+        "position": null,
+        "episodes_count": 0,
+        "category": {
+            "id": 6,
+            "title": "Phim Lẻ",
+            "slug": "phim-le",
+            "description": "Phim Lẻ cập nhật hằng ngày",
+            "status": 1,
+            "position": 4
+        },
+        "genres": [
+            {
+                "id": 26,
+                "title": "TV Shows",
+                "slug": "tv-shows",
+                "description": "Phim thể loại TV Shows",
+                "status": 1,
+                "pivot": {
+                    "movie_id": 140,
+                    "genre_id": 26
+                }
+            }
+        ],
+        "country": {
+            "id": 13,
+            "title": "Quốc Gia Khác",
+            "slug": "quoc-gia-khac",
+            "description": "Phim Quốc gia khác cập nhật hằng ngày",
+            "status": 1
+        }
+    },
+    {
         "id": 139,
         "title": "Tứ Hải Trọng Minh",
         "description": "In order to cure her mother's heart disease, Nanyan worshiped Yangyuezong to study poisonous art, but accidentally planted the \"spiritual seal\" of marriage with the emperor Ji Yang who concealed her identity. In the process of finding out the truth about Yan's mother's mental illness, she was accidentally involved in a huge conspiracy.",
@@ -19,7 +127,7 @@
         "date_cr": "2024-08-15 21:51:21",
         "date_up": "2024-08-15 21:51:21",
         "year": "2024",
-        "views": 1016,
+        "views": 1021,
         "top_view": null,
         "trailer": "",
         "position": null,
@@ -247,7 +355,7 @@
         "date_cr": "2024-06-19 18:44:57",
         "date_up": "2024-08-03 23:17:49",
         "year": "2024",
-        "views": 75,
+        "views": 82,
         "top_view": null,
         "trailer": "AfOlW2OrzqE",
         "position": 0,
@@ -454,7 +562,7 @@
         "date_cr": "2024-06-13 21:43:52",
         "date_up": "2024-06-26 13:18:38",
         "year": "2019",
-        "views": 152,
+        "views": 273,
         "top_view": null,
         "trailer": "5SKP1_F7ReE",
         "position": 28,
@@ -541,7 +649,7 @@
         "date_cr": "2024-06-13 16:07:31",
         "date_up": "2024-06-20 01:25:08",
         "year": "2020",
-        "views": 0,
+        "views": 1,
         "top_view": null,
         "trailer": "MN8fFM1ZdWo",
         "position": 27,

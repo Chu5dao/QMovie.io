@@ -110,7 +110,21 @@
                      @endif
                   @endforeach
                @else
-                  <iframe width="100%" height="500" src="{{$episode->link}}" title="Video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  @foreach($episodes_add as $ep)
+                     @php
+                        $movie_item = $movies_add->firstWhere('id', $ep->movie_id);
+                        // Xác định giá trị tap từ URL
+                        $epValue = 'tap-' . $ep->episode; // Tạo giá trị tap cho tập phim
+                     @endphp
+               
+                     @if (Request::is('xem-phim/' . $movie_item->slug . '/server-' . $current_server->id . '/' . $epValue))
+                        @if ($ep->server == $current_server->id)
+                           <iframe width="100%" height="500" src="{{ $ep->link }}" title="Video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        @else
+                           {{-- <p>Tập phim không tồn tại trên server này.</p> --}}
+                        @endif
+                     @endif
+                  @endforeach
                @endif
                
                <div class="button-watch">

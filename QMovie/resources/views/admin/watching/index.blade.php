@@ -455,6 +455,7 @@
 
                                         @case($movie->episodes && $movie->episodes->count() > $movie->ep_number)
                                             Hoàn Thành
+                                            <br>
                                             Tập đã thêm trên 2 Server
                                             <br>
                                             <div class="fix-text">
