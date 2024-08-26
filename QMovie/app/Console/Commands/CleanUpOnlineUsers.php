@@ -1,10 +1,11 @@
 <?php
-
+// comming soon...
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\DB;
 
 class CleanUpOnlineUsers extends Command
 {
@@ -46,6 +47,9 @@ class CleanUpOnlineUsers extends Command
                 Redis::del($key);
             }
         }
+
+        // Xóa các bản ghi cũ hơn 1 ngày
+        DB::table('activity_log')->where('created_at', '<', now()->subDay())->delete();
 
         $this->info('Expired online users sessions cleaned up successfully.');
     }

@@ -82,7 +82,7 @@ class ActivityLogService
 
         Log::info('Active Users Count: ' . $uniqueSessions->count());
 
-        return $uniqueSessions->count()-1;
+        return $uniqueSessions->count();
     }
 
     private function isWebSocketUserAgent($userAgent)

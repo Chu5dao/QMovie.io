@@ -37,6 +37,62 @@
       .textwidget p a img {
       width: 100%;
       }
+      /* --------- */
+      .copyright_footer {
+         margin-top: 10px; 
+         text-align: center;
+      }
+      .text_copyright {
+         line-height: 32px;
+         font-weight: 600;
+      }
+      #sign-in {
+         color: #ffed4d;
+         background: #DF0053;
+      }
+      #sign-out,
+      #sign-up {
+         background: #224361;
+         color: #fff;
+      }
+      #sign-out,
+      #sign-up,
+      #sign-in {
+      display: inline-block;
+      line-height: 20px;
+      padding: 6px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.4s all;
+      margin-top: 1px;
+      margin-right: 15px;
+      }
+      #sign-out:hover,
+      #sign-up:hover,
+      #sign-in:hover {
+      background: #337ab7;
+      }
+      .sign-out-on-mobile,
+      .sign-up-on-mobile,
+      .sign-in-on-mobile {
+      position: relative;
+      }
+      .sign-out-on-mobile,
+      .sign-in-on-mobile {
+         color: #ffed4d;
+      }
+      .halim-light-mode #sign-out,
+      .halim-light-mode #sign-up,
+      .halim-light-mode #sign-in {
+      box-shadow: none;
+      text-shadow: none;
+      }
+      .halim-light-mode #sign-out:hover,
+      .halim-light-mode #sign-up:hover,
+      .halim-light-mode #sign-in:hover {
+      background: #4d7496;
+      color: #fff;
+      }
    </style>
    <style>
       /* #header .site-title {background: url( '{{asset('uploads/logo/'.$info->logo)}}' ) no-repeat top left;background-size: contain;text-indent: -9999px;} */
@@ -206,66 +262,14 @@
                      <p>{{ $info->description }}</p>
                   </div>
                </div>
+               <div class="widget about col-xs-12 col-sm-4 col-md-4">
+                  <span id="online-users-count">Tài khoản: 0</span><span> đang trực tuyến</span>
+                  <br>
+                  <span id="page-views-count">Lượt truy cập: 0</span><span> đang trực tuyến</span>
+               </div>
          </div>
       </div>
    </footer>
-   <style>
-      .copyright_footer {
-         margin-top: 10px; 
-         text-align: center;
-      }
-      .text_copyright {
-         line-height: 32px;
-         font-weight: 600;
-      }
-      #sign-in {
-         color: #ffed4d;
-         background: #DF0053;
-      }
-      #sign-out,
-      #sign-up {
-         background: #224361;
-         color: #fff;
-      }
-      #sign-out,
-      #sign-up,
-      #sign-in {
-      display: inline-block;
-      line-height: 20px;
-      padding: 6px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: 0.4s all;
-      margin-top: 1px;
-      margin-right: 15px;
-      }
-      #sign-out:hover,
-      #sign-up:hover,
-      #sign-in:hover {
-      background: #337ab7;
-      }
-      .sign-out-on-mobile,
-      .sign-up-on-mobile,
-      .sign-in-on-mobile {
-      position: relative;
-      }
-      .sign-out-on-mobile,
-      .sign-in-on-mobile {
-         color: #ffed4d;
-      }
-      .halim-light-mode #sign-out,
-      .halim-light-mode #sign-up,
-      .halim-light-mode #sign-in {
-      box-shadow: none;
-      text-shadow: none;
-      }
-      .halim-light-mode #sign-out:hover,
-      .halim-light-mode #sign-up:hover,
-      .halim-light-mode #sign-in:hover {
-      background: #4d7496;
-      color: #fff;
-      }
-   </style>
    <div class="copyright_footer">
       <p class="text_copyright">{{ $info->copyright }}</p>
    </div>
@@ -578,6 +582,11 @@
          }
       });
    </script>
+   {{-- script --}}
+   <!-- Load userStatus.js -->
+   <script src="{{ mix('js/userStatus.js') }}" defer></script>
+   <!-- Initialize Echo -->
+   <script src="{{ mix('js/userActivity.js') }}" defer></script>
 </body>
-
+   
 </html>

@@ -1,5 +1,5 @@
 <?php
-
+// All
 namespace App\Http\Middleware;
 
 use Closure;
@@ -24,22 +24,23 @@ class UserOnlineMiddleware
             return $next($request);
         }
         
-        Redis::setex('online-users:' . $sessionId, 600, true);
-        Log::info('Session added to Redis: ' . $sessionId . ' with TTL: ' . Redis::ttl('online-users:' . $sessionId));
+        Redis::setex('page-views:' . $sessionId, 600, true);
+        Log::info('Session added to Redis: ' . $sessionId . ' with TTL: ' . Redis::ttl('page-views:' . $sessionId));
         return $next($request);
     }
 
     public function terminate($request, $response)
     {
         Log::info('UserOnlineMiddleware terminate method called');
+        
         $sessionId = session()->getId();
         if (!$sessionId) {
             Log::error('No session found in terminate');
             return;
         }
-        
-        Redis::del('online-users:' . $sessionId);
+        Redis::del('page-views:' . $sessionId);
         Log::info('Session removed from Redis: ' . $sessionId);
-        event(new \App\Events\UpdateOnlineUsers());
+
+        event(new \App\Events\UpdatePageViews());
     }
 }

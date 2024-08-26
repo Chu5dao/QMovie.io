@@ -55,14 +55,6 @@ class LoginController extends Controller
         // Reset lại số trang truy cập khi người dùng đăng nhập
         session()->put('pages_accessed', 1);
 
-        if ($user->role === 'admin') {
-            return redirect('/admin');
-        } elseif ($user->role === 'user') {
-            return redirect('/home');
-        } else {
-            return redirect('/'); // Trường hợp khác, chuyển hướng về trang chủ hoặc một trang khác.
-        }
-        
         // Phát sự kiện khi người dùng đăng nhập
         event(new UserOnlineStatus($user->id, true));
 
@@ -72,6 +64,12 @@ class LoginController extends Controller
             ['user_id' => $user->id],
             ['updated_at' => now()]
         );
+
+        if ($user->role === 'admin' || $user->role === 'contributor' ) {
+            return redirect('/admin');
+        } else {
+            return redirect('/'); // Trường hợp khác, chuyển hướng về trang chủ hoặc một trang khác.
+        }
     }
 
     /**
@@ -87,7 +85,7 @@ class LoginController extends Controller
 
         // Optionally, you can remove the user from the online users table
         // Example: Removing the user from the database
-        DB::table('online_users')->where('user_id', Auth::id())->delete();
+        DB::table('online_users')->where('user_id', $userId)->delete();
 
         // Xóa session 'pages_accessed' khi người dùng đăng xuất
         session()->forget('pages_accessed');

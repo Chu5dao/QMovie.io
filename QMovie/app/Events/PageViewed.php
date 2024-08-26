@@ -1,5 +1,5 @@
 <?php
-
+// All
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
@@ -7,27 +7,22 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
 
-class UpdateOnlineUsers implements ShouldBroadcast
+class PageViewed
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $count;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public $ipAddress;
+    public function __construct($ipAddress)
     {
-        $keys = Redis::keys('online-users:*');
-        $this->count = count($keys);
-        Log::info('Broadcasting online users count: ' . $this->count);
+        $this->ipAddress = $ipAddress;
     }
 
     /**
@@ -37,11 +32,6 @@ class UpdateOnlineUsers implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('online-users-count');
-    }
-
-    public function broadcastWith()
-    {
-        return ['count' => $this->count];
+        return new PrivateChannel('page-views');
     }
 }

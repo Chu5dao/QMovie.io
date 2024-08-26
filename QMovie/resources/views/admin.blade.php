@@ -14,6 +14,9 @@
     @if(auth()->user()->isAdmin('admin'))
         @include('layouts.statistical')
     @endif
+    {{-- @if(auth()->check())
+        @include('layouts.statistical')
+    @endif --}}
 
     <div class="row-one widgettable">
         
@@ -27,9 +30,4 @@
         @endif
         Xin chào {{ Auth::user()->role }} {{ Auth::user()->name }}
     </div> </div>
-    {{-- script --}}
-    <!-- Load userStatus.js -->
-    <script src="{{ mix('js/userStatus.js') }}" defer></script>
-    <!-- Initialize Echo -->
-    <script src="{{ mix('js/userActivity.js') }}" defer></script>
 @endsection

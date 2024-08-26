@@ -3,11 +3,11 @@
         "id": 141,
         "title": "Phòng Kiểm Sát Viên Số 9",
         "description": "The newly appointed Director of the Juvenile Prosecution Department, Lei Xu, juvenile prosecutor Du Ziyu, clerk Yang Tian, and bailiff Xu Zhangli, along with the team at the Ninth Prosecution Department, tackle juvenile criminal cases. When a routine case takes an unexpected turn, they find themselves investigating a juvenile suspect in an accidental death. As they dig deeper, several seemingly unrelated cases reveal a complex web of connections. The team gradually uncovers the truth, bringing the criminals to justice while working to protect the youth and nurturing hope for a future where their services are no longer needed.",
-        "status": 0,
+        "status": 1,
         "image": "https://img.ophim.live/uploads/movies/phong-kiem-sat-vien-so-9-thumb.jpg",
         "category_id": 6,
         "genre_id": 26,
-        "country_id": 13,
+        "country_id": 4,
         "name_eng": "For the Young Ones(2024)",
         "slug": "phong-kiem-sat-vien-so-9",
         "tags": "Phòng Kiểm Sát Viên Số 9,phong-kiem-sat-vien-so-9",
@@ -22,7 +22,7 @@
         "views": 354,
         "top_view": null,
         "trailer": "https://www.youtube.com/watch?v=A1FSdVpHxmw",
-        "position": null,
+        "position": 33,
         "episodes_count": 17,
         "category": {
             "id": 6,
@@ -46,10 +46,10 @@
             }
         ],
         "country": {
-            "id": 13,
-            "title": "Quốc Gia Khác",
-            "slug": "quoc-gia-khac",
-            "description": "Phim Quốc gia khác cập nhật hằng ngày",
+            "id": 4,
+            "title": "Hàn Quốc",
+            "slug": "han-quoc",
+            "description": "Phim Hàn Quốc cập nhật hằng ngày",
             "status": 1
         }
     },
@@ -130,7 +130,7 @@
         "views": 1021,
         "top_view": null,
         "trailer": "",
-        "position": null,
+        "position": 32,
         "episodes_count": 23,
         "category": {
             "id": 6,
@@ -206,7 +206,7 @@
         "views": 42,
         "top_view": null,
         "trailer": "",
-        "position": null,
+        "position": 40,
         "episodes_count": 1,
         "category": {
             "id": 6,
@@ -358,7 +358,7 @@
         "views": 82,
         "top_view": null,
         "trailer": "AfOlW2OrzqE",
-        "position": 0,
+        "position": 41,
         "episodes_count": 1,
         "category": {
             "id": 1,
@@ -456,7 +456,7 @@
         "views": 6,
         "top_view": null,
         "trailer": "8dILv6uswAY",
-        "position": 15,
+        "position": 45,
         "episodes_count": 1,
         "category": {
             "id": 2,
@@ -565,7 +565,7 @@
         "views": 273,
         "top_view": null,
         "trailer": "5SKP1_F7ReE",
-        "position": 28,
+        "position": 39,
         "episodes_count": 9,
         "category": {
             "id": 4,
@@ -652,7 +652,7 @@
         "views": 1,
         "top_view": null,
         "trailer": "MN8fFM1ZdWo",
-        "position": 27,
+        "position": 38,
         "episodes_count": 1,
         "category": {
             "id": 4,
@@ -739,7 +739,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "K-8VYKUZYiw",
-        "position": 25,
+        "position": 37,
         "episodes_count": 0,
         "category": {
             "id": 5,
@@ -826,7 +826,7 @@
         "views": 64304,
         "top_view": 1,
         "trailer": "EzFXDvC-EwM",
-        "position": 24,
+        "position": 36,
         "episodes_count": 2,
         "category": {
             "id": 4,
@@ -913,7 +913,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "uVuARLQdC8Y",
-        "position": 1,
+        "position": 42,
         "episodes_count": 0,
         "category": {
             "id": 1,
@@ -989,7 +989,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "eGaAl_8QW2c",
-        "position": 16,
+        "position": 34,
         "episodes_count": 0,
         "category": {
             "id": 3,
@@ -1065,7 +1065,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "Q2KY5rsbsHA",
-        "position": 23,
+        "position": 35,
         "episodes_count": 4,
         "category": {
             "id": 3,
@@ -1217,7 +1217,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "_D7i26c7Hv8",
-        "position": 2,
+        "position": 43,
         "episodes_count": 0,
         "category": {
             "id": 1,
@@ -1304,7 +1304,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "xtAL2x58hns",
-        "position": 3,
+        "position": 44,
         "episodes_count": 0,
         "category": {
             "id": 1,
@@ -1902,7 +1902,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "brFifrUVKNw",
-        "position": 32,
+        "position": 7,
         "episodes_count": 0,
         "category": {
             "id": 5,
@@ -2065,7 +2065,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "P3_dj7BnHp8",
-        "position": 41,
+        "position": 46,
         "episodes_count": 0,
         "category": {
             "id": 6,
@@ -2282,7 +2282,7 @@
         "views": 19371,
         "top_view": 1,
         "trailer": "CotipI30Bx8",
-        "position": 7,
+        "position": 16,
         "episodes_count": 0,
         "category": {
             "id": 1,
@@ -2467,7 +2467,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "zzs1Jn_8W6M",
-        "position": 34,
+        "position": 21,
         "episodes_count": 0,
         "category": {
             "id": 5,
@@ -2619,7 +2619,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "hWE6B3g6d5c",
-        "position": 42,
+        "position": 22,
         "episodes_count": 0,
         "category": {
             "id": 6,
@@ -2684,7 +2684,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "s_76M4c4LTo",
-        "position": 8,
+        "position": 11,
         "episodes_count": 0,
         "category": {
             "id": 2,
@@ -2858,7 +2858,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "2t9RwElQGhg",
-        "position": 44,
+        "position": 23,
         "episodes_count": 0,
         "category": {
             "id": 6,
@@ -3585,7 +3585,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "B2Jlyq_Tf3Y",
-        "position": 9,
+        "position": 12,
         "episodes_count": 0,
         "category": {
             "id": 2,
@@ -3627,7 +3627,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "UkOcGsPY0NU",
-        "position": 10,
+        "position": 13,
         "episodes_count": 0,
         "category": {
             "id": 2,
@@ -3795,7 +3795,7 @@
         "views": 0,
         "top_view": null,
         "trailer": "Iocr2svmDKU",
-        "position": 11,
+        "position": 14,
         "episodes_count": 0,
         "category": {
             "id": 2,

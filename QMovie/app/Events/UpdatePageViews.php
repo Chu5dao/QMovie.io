@@ -1,5 +1,5 @@
 <?php
-// Lượt truy cập Tài Khoản
+// All
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
@@ -7,23 +7,27 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
-class OnlineUsersUpdated
+class UpdatePageViews implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $count;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public $count;
-
-    public function __construct($count)
+    public function __construct()
     {
-        $this->count = $count;
+        $keys = Redis::keys('page-views:*');
+        $this->count = count($keys);
+        Log::info('Broadcasting online users count: ' . $this->count);
     }
 
     /**
@@ -33,11 +37,16 @@ class OnlineUsersUpdated
      */
     public function broadcastOn()
     {
-        return new Channel('online-users');
+        return new Channel('page-views-count');
     }
 
+    public function broadcastWith()
+    {
+        return ['count' => $this->count];
+    }
+    
     public function broadcastAs()
     {
-        return 'OnlineUsersUpdated';
+        return 'UpdatePageViews';  // Đảm bảo tên sự kiện khớp
     }
 }

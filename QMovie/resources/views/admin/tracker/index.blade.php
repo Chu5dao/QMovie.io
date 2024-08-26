@@ -52,9 +52,4 @@
         </div>
     </div>
 </div>
-{{-- script --}}
-<!-- Load userStatus.js -->
-<script src="{{ mix('js/userStatus.js') }}" defer></script>
-<!-- Initialize Echo -->
-<script src="{{ mix('js/userActivity.js') }}" defer></script>
 @endsection

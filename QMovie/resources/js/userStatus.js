@@ -4,28 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!onlineUsersCountElement) {
         console.error('Element with ID "online-users-count" not found.');
     } else {
-        window.Echo.join('online-users')
-            .here((users) => {
-                onlineUsersCountElement.innerText = `Tài khoản: ${users.length}`;
-            })
-            .joining((user) => {
-                const currentCount = parseInt(onlineUsersCountElement.innerText.replace('Tài khoản: ', '')) || 0;
-                onlineUsersCountElement.innerText = `Tài khoản: ${currentCount + 1}`;
-            })
-            .leaving((user) => {
-                const currentCount = parseInt(onlineUsersCountElement.innerText.replace('Tài khoản: ', '')) || 0;
-                onlineUsersCountElement.innerText = `Tài khoản: ${currentCount - 1}`;
+        // Lắng nghe sự kiện OnlineUsersUpdated từ Laravel Echo
+        window.Echo.channel('online-users')
+            .listen('.OnlineUsersUpdated', (e) => {
+                onlineUsersCountElement.innerText = `Tài khoản: ${e.count}`;
             });
     }
 
-    // Đoạn mã xử lý cho 'total-online-users-count'
-    const totalOnlineUsersCountElement = document.getElementById('total-online-users-count');
-    if (!totalOnlineUsersCountElement) {
-        console.error('Element with ID "total-online-users-count" not found.');
+    // Đoạn mã xử lý cho 'page-views-count'
+    const pageViewsCountElement = document.getElementById('page-views-count');
+    if (!pageViewsCountElement) {
+        console.error('Element with ID "page-views-count" not found.');
     } else {
-        window.Echo.channel('online-users-count')
-            .listen('.OnlineUsersUpdated', (e) => {
-                document.getElementById('total-online-users-count').innerText = 'All: ' + e.count;
+        window.Echo.channel('page-views-count')
+            .listen('.UpdatePageViews', (e) => {
+                pageViewsCountElement.innerText = 'Lượt truy cập: ' + e.count;
             });
     }
 });

@@ -1,5 +1,5 @@
 <?php
-
+// Lượt truy cập Tài Khoản
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
@@ -41,7 +41,7 @@ class UserOnlineStatus
         // return new PrivateChannel('user.' . $this->userId);
 
         // Sử dụng PresenceChannel nếu bạn muốn phát sự kiện đến tất cả người dùng trong kênh đó
-        return new PresenceChannel('online-users');
+        return new Channel('online-users');
     }
     /**
      * Define the event's broadcast name.
