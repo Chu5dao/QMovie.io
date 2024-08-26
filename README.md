@@ -56,7 +56,7 @@ Sử dụng Xampp để tạo và thêm dữ liệu bảng qmovie (cùng tên fi
 Ngoài ra cài đặt các phiên bản ```Redis```, ```WebSockets```,.. có trong file ```composer.json``` và các gói được liệt kê ở trên sao cho phù hợp.
 
 # VIDEO DEMO
-
+https://ok.ru/video/8095872846422
 
 # PHÂN RÃ CHỨC NĂNG TRONG DỰ ÁN
 1. Người dùng
