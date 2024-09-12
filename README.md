@@ -92,8 +92,8 @@ https://ok.ru/video/8095872846422
     - QL API Phim
     - QL Thông tin trang
 4. Các thành phần khác
-    - Sắp xếp phim theo cột Thịnh thành (ngày tuần tháng)
-    - Lọc Tag phim theo tìm 
+    - Sắp xếp phim theo cột Thịnh thành (ngày, tuần, tháng)
+    - Sắp xếp Tag phim theo tìm kiếm gần đây
     - Popup quảng cáo
 
 # THÔNG TIN LIÊN HỆ
